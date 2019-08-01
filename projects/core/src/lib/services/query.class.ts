@@ -2,7 +2,8 @@ import {Observable} from 'rxjs';
 import {ServerResponse} from '../interfaces/server-response.model';
 import {DataInfo} from '../interfaces/data-info.model';
 
-export abstract class CoreQuery<T> {
+export abstract class Query<T> {
+  abstract grid(info: DataInfo): Observable<ServerResponse<T>>;
   abstract get(info: DataInfo): Observable<ServerResponse<T>>;
   abstract list(info: DataInfo): Observable<ServerResponse<T>>;
   abstract post(info: DataInfo): Observable<ServerResponse<T>>;

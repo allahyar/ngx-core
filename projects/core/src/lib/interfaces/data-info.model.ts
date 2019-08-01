@@ -1,6 +1,7 @@
 export interface DataInfo {
   url: string;
-  data?: any;
+  errors?: string[];
+  result?: any;
 }
 
 export interface DataGridParams {

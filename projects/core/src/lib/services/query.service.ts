@@ -1,16 +1,27 @@
-import {Injectable, OnDestroy, OnInit} from '@angular/core';
-import {CoreQuery} from './query.class';
+import {Injectable, Injector} from '@angular/core';
+import {Query} from './query.class';
 import {Observable} from 'rxjs';
 import {DataInfo} from '../interfaces/data-info.model';
 import {ServerResponse} from '../interfaces/server-response.model';
+import {HttpProvider} from './httpProvider.class';
+import {Inject} from '../decorators/inject.decorator';
 
 @Injectable({
   providedIn: 'root'
 })
-export class QueryService<T> extends CoreQuery<T> implements OnDestroy {
+export class QueryService<T> extends Query<T> {
 
-  delete(info: DataInfo): Observable<ServerResponse<any>> {
-    return undefined;
+  @Inject(HttpProvider) http: HttpProvider;
+
+  constructor(private injector: Injector) {
+    super();
+  }
+
+  delete(info: DataInfo): Observable<ServerResponse<T>> {
+    return new Observable((observer) => {
+      observer.next({success: true});
+      observer.complete();
+    });
   }
 
   get(info: DataInfo): Observable<ServerResponse<T>> {
@@ -25,7 +36,8 @@ export class QueryService<T> extends CoreQuery<T> implements OnDestroy {
     return undefined;
   }
 
-  ngOnDestroy(): void {
-    console.log('OnDestroy ...');
+  grid(info: DataInfo): Observable<ServerResponse<T>> {
+    return undefined;
   }
+
 }

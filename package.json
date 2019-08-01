@@ -7,7 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "npm-pack": "npm i projects/core/dist",
-    "build:lib": "ng-packagr -p projects/core/package.json",
+    "build:lib": "ng build core",
     "package": "npm run build:lib && npm run npm-pack",
     "lint": "ng lint",
     "e2e": "ng e2e"
