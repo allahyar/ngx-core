@@ -1,5 +1,5 @@
-import {Component, Inject, Injector, OnInit} from '@angular/core';
-import {Query, QueryService} from 'core';
+import {Component, Injector, OnInit} from '@angular/core';
+import {Inject, Query, QueryService} from 'core';
 
 
 @Component({
@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
 
   constructor() {
   }
+
 
   ngOnInit(): void {
     this.queryService.delete({url: ''}).subscribe(res => {
