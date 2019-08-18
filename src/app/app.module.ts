@@ -5,13 +5,16 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CoreModule} from 'core';
 
+
+const CORE_CONFIG = {};
+
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
     BrowserModule,
-    CoreModule.forRoot({}),
+    CoreModule.forRoot(CORE_CONFIG),
     AppRoutingModule
   ],
   providers: [],

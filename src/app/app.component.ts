@@ -1,5 +1,5 @@
-import {Component, Injector, OnInit} from '@angular/core';
-import {Inject, Query, QueryService} from 'core';
+import {Component, OnInit} from '@angular/core';
+import {Inject, LocalStorage, QueryService} from 'core';
 
 
 @Component({
@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   @Inject(QueryService)
   queryService: QueryService<any>;
 
-  constructor() {
+  constructor(private storage: LocalStorage) {
   }
 
 
