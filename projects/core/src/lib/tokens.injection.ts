@@ -1,10 +1,7 @@
 import {InjectionToken, Type} from '@angular/core';
 import {Query} from './classes/query.class';
+import {AuthConfig, LocalStorageConfig} from './interfaces/config.model';
 
-export const QUERY_SERVICE_TOKEN = new InjectionToken<Type<Query<any>>>('QUERY_SERVICE_TYPE');
-export const LOCAL_STORAGE_TOKEN = new InjectionToken<LOCAL_STORAGE_CONFIG>('LOCAL_STORAGE_CONFIG');
-
-
-export interface LOCAL_STORAGE_CONFIG {
-  prefix?: string;
-}
+export const QUERY_SERVICE_TOKEN = new InjectionToken<Type<Query<any>>>('QueryService');
+export const AUTH_SERVICE_TOKEN = new InjectionToken<AuthConfig>('AuthConfig');
+export const LOCAL_STORAGE_TOKEN = new InjectionToken<LocalStorageConfig>('LocalStorageConfig');

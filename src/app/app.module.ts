@@ -3,10 +3,18 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {CoreModule} from 'core';
+import {AuthModule, CoreModule} from 'core';
+import {AuthModuleConfig, CoreModuleConfig} from 'core/lib/interfaces/config.model';
 
 
-const CORE_CONFIG = {};
+export const CORE_CONFIG: CoreModuleConfig = {
+  storage: {
+    perfix: 'ZarsamErpAP'
+  }
+};
+export const AUTH_CONFIG: AuthModuleConfig = {
+  loginEndPoint: 'خن'
+};
 
 @NgModule({
   declarations: [
@@ -15,6 +23,7 @@ const CORE_CONFIG = {};
   imports: [
     BrowserModule,
     CoreModule.forRoot(CORE_CONFIG),
+    AuthModule.forRoot(AUTH_CONFIG),
     AppRoutingModule
   ],
   providers: [],

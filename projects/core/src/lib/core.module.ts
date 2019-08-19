@@ -2,11 +2,12 @@ import {Injector, ModuleWithProviders, NgModule} from '@angular/core';
 import {Query} from './classes/query.class';
 import {QueryService} from './services/query.service';
 import {HttpClientModule} from '@angular/common/http';
-import {LOCAL_STORAGE_CONFIG, LOCAL_STORAGE_TOKEN, QUERY_SERVICE_TOKEN} from './tokens.injection';
 import {LocalStorage} from './services/local-storage.service';
-import {ModuleConfig} from './interfaces/config.model';
+import {CoreModuleConfig, LocalStorageConfig} from './interfaces/config.model';
+import {LOCAL_STORAGE_TOKEN, QUERY_SERVICE_TOKEN} from './tokens.injection';
 
-export function provideStorageService(config: LOCAL_STORAGE_CONFIG): LocalStorage {
+
+export function provideStorageService(config: LocalStorageConfig): LocalStorage {
   return new LocalStorage(config);
 }
 
@@ -21,7 +22,7 @@ export class CoreModule {
     window['$$$_root_injector'] = injector;
   }
 
-  static forRoot(config?: ModuleConfig): ModuleWithProviders {
+  static forRoot(config?: CoreModuleConfig): ModuleWithProviders {
     return {
       ngModule: CoreModule,
       providers: [
