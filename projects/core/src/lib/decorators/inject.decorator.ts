@@ -1,6 +1,6 @@
 import {Type, InjectionToken, InjectFlags, Injector} from '@angular/core';
 
-export function Inject<T>(
+export function InjectToken<T>(
   token: Type<T> | InjectionToken<T> | any,
   notFoundValue: T = null,
   flags?: InjectFlags
