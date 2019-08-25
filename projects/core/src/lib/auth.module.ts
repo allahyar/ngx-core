@@ -3,30 +3,30 @@ import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './interceptors/jwt.interceptor';
 import {RouterModule} from '@angular/router';
-import {LoggedInAuth} from './services/auth-guard.service';
+import {LoggedInAuth, LoggedOutAuth} from './services/auth-guard.service';
 import {AuthenticationService} from './services/authentication.service';
 import {AuthModuleConfig} from './interfaces/config.model';
 
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, HttpClientModule, RouterModule]
+	declarations: [],
+	imports: [CommonModule, HttpClientModule, RouterModule]
 })
 export class AuthModule {
 
-  static forRoot(config?: AuthModuleConfig): ModuleWithProviders {
+	static forRoot(config?: AuthModuleConfig): ModuleWithProviders {
 
-    return {
-      ngModule: AuthModule,
-      providers: [
-        {provide: 'config', useValue: config},
-        AuthenticationService, LoggedInAuth,
-        // {
-        //   provide: HTTP_INTERCEPTORS,
-        //   useClass: JwtInterceptor,
-        //   multi: true,
-        // }
-      ]
-    };
-  }
+		return {
+			ngModule: AuthModule,
+			providers: [
+				{provide: 'config', useValue: config},
+				AuthenticationService, LoggedInAuth, LoggedOutAuth
+				// {
+				//   provide: HTTP_INTERCEPTORS,
+				//   useClass: JwtInterceptor,
+				//   multi: true,
+				// }
+			]
+		};
+	}
 }
