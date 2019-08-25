@@ -1,11 +1,14 @@
 export interface CoreModuleConfig {
   storage?: {
-    perfix: string
+    prefix: string
+  };
+  language?: {
+    default: string;
+    support: string[];
   };
 }
 
 export interface AuthModuleConfig {
-  token: any;
   loginEndPoint?: string;
   guards?: {
     loggedInGuard: {
@@ -26,6 +29,3 @@ export interface LocalStorageConfig {
   prefix?: string;
 }
 
-export interface AuthConfig {
-  prefix?: string;
-}

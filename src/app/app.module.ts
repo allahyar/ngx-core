@@ -1,30 +1,26 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
-import {AppRoutingModule} from './app-routing.module';
+import {RoutingModule} from './routing.module';
 import {AppComponent} from './app.component';
+import {LoginComponent} from './login/login.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 import {AuthModule, CoreModule} from 'core';
-import {AuthModuleConfig, CoreModuleConfig} from 'core/lib/interfaces/config.model';
+import {AUTH_CONFIG, CORE_CONFIG} from './module.config';
+import {HttpClientModule} from '@angular/common/http';
 
-
-export const CORE_CONFIG: CoreModuleConfig = {
-  storage: {
-    perfix: 'ZarsamErpAP'
-  }
-};
-export const AUTH_CONFIG: AuthModuleConfig = {
-  loginEndPoint: 'خن'
-};
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     CoreModule.forRoot(CORE_CONFIG),
     AuthModule.forRoot(AUTH_CONFIG),
-    AppRoutingModule
+    HttpClientModule,
+    RoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

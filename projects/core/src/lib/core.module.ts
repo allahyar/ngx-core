@@ -1,31 +1,56 @@
-import {Injector, ModuleWithProviders, NgModule} from '@angular/core';
+import {Inject, Injector, ModuleWithProviders, NgModule} from '@angular/core';
 import {Query} from './classes/query.class';
 import {QueryService} from './services/query.service';
 import {HttpClientModule} from '@angular/common/http';
-import {LocalStorage} from './services/local-storage.service';
-import {CoreModuleConfig, LocalStorageConfig} from './interfaces/config.model';
-import {LOCAL_STORAGE_TOKEN, QUERY_SERVICE_TOKEN} from './tokens.injection';
+import {CoreModuleConfig} from './interfaces/config.model';
+import {DEFAULT_LANG, QUERY_SERVICE_TOKEN, SUPPORT_LANG} from './tokens';
+import {InjectToken} from './decorators/inject.decorator';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {translateModuleOptions} from './util/helper';
+import {UiService} from './services/ui.service';
 
-
-export function provideStorageService(config: LocalStorageConfig): LocalStorage {
-  return new LocalStorage(config);
-}
 
 @NgModule({
   declarations: [],
-  imports: [HttpClientModule],
-  exports: []
+  imports: [
+    HttpClientModule,
+    TranslateModule.forRoot(translateModuleOptions)
+  ],
+  exports: [TranslateModule]
 })
 export class CoreModule {
 
-  constructor(injector: Injector) {
+  @InjectToken(TranslateService)
+  _translateService: TranslateService;
+
+  @InjectToken(UiService)
+  _uiService: UiService;
+
+  constructor(@Inject(DEFAULT_LANG) defaultLang: string,
+              @Inject(SUPPORT_LANG) supportLang: string[],
+              injector: Injector) {
+
     window['$$$_root_injector'] = injector;
+
+    this._translateService.addLangs(supportLang);
+    this._translateService.setDefaultLang(defaultLang);
+    this._translateService.use(defaultLang).subscribe(res => {
+
+      const dir = defaultLang === 'fa' ? 'rtl' : 'ltr';
+      this._uiService.setDirection(dir);
+
+    });
+
   }
 
+
   static forRoot(config?: CoreModuleConfig): ModuleWithProviders {
+
     return {
       ngModule: CoreModule,
       providers: [
+        UiService,
+        {provide: 'config', useValue: config},
         {
           provide: Query,
           useClass: QueryService
@@ -35,14 +60,13 @@ export class CoreModule {
           useValue: QueryService
         },
         {
-          provide: LOCAL_STORAGE_TOKEN,
-          useValue: config
+          provide: DEFAULT_LANG,
+          useValue: (config && config.language.default) || 'en'
         },
         {
-          provide: LocalStorage,
-          useClass: provideStorageService,
-          deps: [LOCAL_STORAGE_TOKEN]
-        },
+          provide: SUPPORT_LANG,
+          useValue: (config && config.language.support) || ['en', 'fa']
+        }
       ]
     };
   }

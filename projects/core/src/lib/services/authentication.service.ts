@@ -2,23 +2,16 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpProvider} from './http-provider.service';
 import {Observable, ReplaySubject} from 'rxjs';
 import {InjectToken} from '../decorators/inject.decorator';
-import {AUTH_SERVICE_TOKEN} from '../tokens.injection';
 import {AuthModuleConfig} from '../interfaces/config.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthenticationService {
 
   @InjectToken(HttpProvider) http: HttpProvider;
 
   private _currentUserValue = new ReplaySubject<any>();
-  private _config: AuthModuleConfig;
 
-  constructor(@Inject(AUTH_SERVICE_TOKEN) config?: AuthModuleConfig) {
-    if (config) {
-      this._config = config;
-    }
+  constructor(@Inject('config') private config: AuthModuleConfig) {
   }
 
   get currentUserValue() {
@@ -31,7 +24,7 @@ export class AuthenticationService {
 
   verifyToken(token: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.http.get(this._config.loginEndPoint + token).subscribe(res => {
+      this.http.get(this.config.loginEndPoint + token).subscribe(res => {
         if (res.success) {
           resolve(res);
           return true;

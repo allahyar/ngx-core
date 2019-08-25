@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService, InjectToken, LocalStorage, QueryService} from 'core';
+import {AuthenticationService, InjectToken, LocalStorage, QueryService, UiService} from 'core';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -14,7 +15,14 @@ export class AppComponent implements OnInit {
   queryService: QueryService<any>;
 
   constructor(private storage: LocalStorage,
+              private uiService: UiService,
+              private translate: TranslateService,
               private auth: AuthenticationService) {
+
+    // this.translate.addLangs(['en', 'fa']);
+    // this.translate.setDefaultLang('en');
+    this.translate.use('en').subscribe(res => console.log);
+
     this.storage.set('allahyar', 'adadad', Date.now());
     if (this.storage.has('allahyar')) {
       console.log('asas');
@@ -22,6 +30,7 @@ export class AppComponent implements OnInit {
     this.auth.verifyToken('asas').then(res => {
       console.log(res);
     });
+
   }
 
 
@@ -29,6 +38,15 @@ export class AppComponent implements OnInit {
     this.queryService.delete({url: ''}).subscribe(res => {
       console.log(res);
     });
+
+    setTimeout(() => {
+      this.uiService.setDirection('ltr');
+    }, 2000);
+
+    setTimeout(() => {
+      this.uiService.setDirection('rtl');
+    }, 4000);
+
   }
 
 

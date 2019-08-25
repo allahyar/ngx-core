@@ -1,7 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
-import {LOCAL_STORAGE_CONFIG_DEFAULTS} from '../module.config';
-import {LOCAL_STORAGE_TOKEN} from '../tokens.injection';
 import {LocalStorageConfig} from '../interfaces/config.model';
+import {LOCAL_STORAGE_CONFIG_DEFAULTS} from '../config';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +9,9 @@ export class LocalStorage {
 
   _prefix: string;
 
-  constructor(@Inject(LOCAL_STORAGE_TOKEN) config?: LocalStorageConfig) {
+  constructor(@Inject('config') config?: LocalStorageConfig) {
     if (config) {
       this._prefix = config.prefix || LOCAL_STORAGE_CONFIG_DEFAULTS.prefix;
-      console.log(this._prefix);
     }
   }
 

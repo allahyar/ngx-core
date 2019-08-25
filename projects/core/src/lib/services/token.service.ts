@@ -10,7 +10,7 @@ export class TokenService {
   private _token: BehaviorSubject<Token>;
 
   constructor() {
-    this._token = new BehaviorSubject(new Token(localStorage.getItem('auth_token')));
+    this._token = new BehaviorSubject(new Token(localStorage.getItem('satellizer_token')));
   }
 
   /**
