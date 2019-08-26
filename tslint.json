@@ -99,6 +99,13 @@
 			true,
 			"tabs",
 			4
+		],
+		"align": [
+			false,
+			"parameters",
+			"statements",
+			"members",
+			"arguments"
 		]
 	},
 	"rulesDirectory": [
