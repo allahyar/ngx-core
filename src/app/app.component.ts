@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService, InjectToken, LocalStorage, QueryService, UiService} from 'core';
-import {TranslateService} from '@ngx-translate/core';
+import {AuthenticationService, CoreTranslateService, DialogService, InjectToken, LocalStorage, QueryService, UiService} from 'core';
 
 
 @Component({
@@ -16,12 +15,12 @@ export class AppComponent implements OnInit {
 
 	constructor(private storage: LocalStorage,
 				private uiService: UiService,
-				private translate: TranslateService,
+				private translate: CoreTranslateService,
+				private dialog: DialogService,
 				private auth: AuthenticationService) {
 
-		// this.translate.addLangs(['en', 'fa']);
-		// this.translate.setDefaultLang('en');
-		this.translate.use('en').subscribe(res => console.log);
+
+		console.log(this.translate.instant('HELLO'));
 
 		this.storage.set('allahyar', 'adadad', Date.now());
 		if (this.storage.has('allahyar')) {
@@ -38,17 +37,18 @@ export class AppComponent implements OnInit {
 		this.queryService.delete({url: ''}).subscribe(res => {
 			console.log(res);
 		});
-
-		setTimeout(() => {
-			this.uiService.setDirection('ltr');
-		}, 2000);
-
-		setTimeout(() => {
-			this.uiService.setDirection('rtl');
-		}, 4000);
-
-
-		console.log(this.uiService.direction);
+		this.dialog.prompt('HELLO');
+		// setTimeout(() => {
+		// 	this.dialog.prompt('HELLO');
+		// 	this.uiService.setDirection('ltr');
+		// }, 2000);
+		//
+		// setTimeout(() => {
+		// 	this.uiService.setDirection('rtl');
+		// }, 4000);
+		//
+		//
+		// console.log(this.uiService.direction);
 
 	}
 
