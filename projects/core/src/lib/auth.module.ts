@@ -19,7 +19,7 @@ export class AuthModule {
 		return {
 			ngModule: AuthModule,
 			providers: [
-				{provide: 'config', useValue: config},
+				{provide: 'authConfig', useValue: config},
 				AuthenticationService, LoggedInAuth, LoggedOutAuth
 				// {
 				//   provide: HTTP_INTERCEPTORS,

@@ -11,7 +11,7 @@ export class AuthenticationService {
 
   private _currentUserValue = new ReplaySubject<any>();
 
-  constructor(@Inject('config') private config: AuthModuleConfig) {
+  constructor(@Inject('authConfig') private config: AuthModuleConfig) {
   }
 
   get currentUserValue() {

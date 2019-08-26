@@ -20,7 +20,7 @@ export class LoggedInAuth implements CanActivate {
 	@InjectToken(Router)
 	_router: Router;
 
-	constructor(@Inject('config') private config: AuthModuleConfig) {
+	constructor(@Inject('authConfig') private config: AuthModuleConfig) {
 	}
 
 	canActivate() {
@@ -55,7 +55,7 @@ export class LoggedOutAuth implements CanActivate {
 	@InjectToken(Router)
 	_router: Router;
 
-	constructor(@Inject('config') private config: AuthModuleConfig) {
+	constructor(@Inject('authConfig') private config: AuthModuleConfig) {
 	}
 
 	canActivate() {
