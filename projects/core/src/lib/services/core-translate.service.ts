@@ -29,12 +29,13 @@ export class CoreTranslateService {
 		key: string | Array<string>,
 		interpolateParams?: Object
 	): string | any {
-		if (isString(key) && key.indexOf('_') > 0) {
-			const items = (key as string).split('_');
+		if (isString(key) && key.indexOf(':') > 0) {
+			const items = (key as string).split(':');
 			return items
 				.map(item => this._translateService.instant(item, interpolateParams))
 				.join(' ');
 		}
+
 		return this._translateService.instant(key, interpolateParams);
 	}
 

@@ -14,14 +14,14 @@ export class DialogService {
 
 	private _config: NgxCoolDialogsLocalConfig;
 
-	constructor(@Inject('config') private config: UiModuleConfig,
+	constructor(@Inject('uiConfig') private config: UiModuleConfig,
 				private _translateService: CoreTranslateService) {
 		this._translateService.loaded.subscribe(res => {
 			if (res) {
 				console.log('asasas');
 			}
 		});
-		this.refactorConfig();
+		this.reConfig();
 
 	}
 
@@ -40,7 +40,7 @@ export class DialogService {
 		return this._dialogService.alert(message, this._config);
 	}
 
-	refactorConfig() {
+	reConfig() {
 
 		const {theme, defaultText, cancelButtonText, okButtonText, color} = this.config.dialog;
 		// console.log(theme);

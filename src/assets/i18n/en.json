@@ -1,3 +1,10 @@
 {
-  "HELLO": "Hello"
+	"HELLO": "Hello {{name}}",
+	"INFO_TITLE": "adad",
+	"GLOBAL": {
+		"ERROR_TITLE": "Error",
+		"OK_TITLE": "Success",
+		"WARNING_TITLE": "Warning",
+		"INFO_TITLE": "Info"
+	}
 }

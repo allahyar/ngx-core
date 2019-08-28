@@ -1,5 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService, CoreTranslateService, DialogService, InjectToken, LocalStorage, QueryService, UiService} from 'core';
+import {
+	AuthenticationService,
+	CoreTranslateService,
+	DialogService,
+	InjectToken,
+	LocalStorage,
+	QueryService,
+	ToastService,
+	UiService
+} from 'core';
 
 
 @Component({
@@ -17,18 +26,23 @@ export class AppComponent implements OnInit {
 				private uiService: UiService,
 				private translate: CoreTranslateService,
 				private dialog: DialogService,
+				private toast: ToastService,
 				private auth: AuthenticationService) {
 
 
-		console.log(this.translate.instant('HELLO'));
+		console.log(Math.floor(Date.now() / 1000));
 
 		this.storage.set('allahyar', 'adadad', Date.now());
 		if (this.storage.has('allahyar')) {
 			console.log('asas');
 		}
-		this.auth.verifyToken('asas').then(res => {
-			console.log(res);
+		this.auth.verifyToken().then(res => {
+			console.log(this.auth.currentUserValue);
 		});
+
+
+		console.log(this.auth.currentUser);
+
 
 	}
 
@@ -38,10 +52,12 @@ export class AppComponent implements OnInit {
 			console.log(res);
 		});
 		this.dialog.prompt('HELLO');
-		// setTimeout(() => {
-		// 	this.dialog.prompt('HELLO');
-		// 	this.uiService.setDirection('ltr');
-		// }, 2000);
+		setTimeout(() => {
+			// this.dialog.prompt('HELLO');
+			// this.uiService.setDirection('ltr');
+			this.toast.success('HELLO', {name: 'allahyar'});
+
+		}, 2000);
 		//
 		// setTimeout(() => {
 		// 	this.uiService.setDirection('rtl');

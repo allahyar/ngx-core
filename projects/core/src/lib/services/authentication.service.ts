@@ -3,42 +3,61 @@ import {HttpProvider} from './http-provider.service';
 import {Observable, ReplaySubject} from 'rxjs';
 import {InjectToken} from '../decorators/inject.decorator';
 import {AuthModuleConfig} from '../interfaces/config.model';
+import {UserRespone} from '../interfaces/auth.model';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthenticationService {
 
-  @InjectToken(HttpProvider) http: HttpProvider;
+	@InjectToken(HttpProvider) http: HttpProvider<UserRespone>;
 
-  private _currentUserValue = new ReplaySubject<any>();
+	private _currentUserSubject = new ReplaySubject<UserRespone>(1);
+	private _currentUserValue: UserRespone;
 
-  constructor(@Inject('authConfig') private config: AuthModuleConfig) {
-  }
+	constructor(@Inject('authConfig') private config: AuthModuleConfig,
+				private router: Router) {
+	}
 
-  get currentUserValue() {
-    return this._currentUserValue;
-  }
+	get currentUserValue(): UserRespone {
+		return this._currentUserValue;
+	}
 
-  get currentUser(): Observable<any> {
-    return this._currentUserValue.asObservable();
-  }
+	get currentUser(): Observable<any> {
+		return this._currentUserSubject.asObservable();
+	}
 
-  verifyToken(token: string): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      this.http.get(this.config.loginEndPoint + token).subscribe(res => {
-        if (res.success) {
-          resolve(res);
-          return true;
-        }
-      }, err => reject(err));
-    });
-  }
+	setting(prop: string): any {
+		if (prop.indexOf('.') > 0) {
+			const split = prop.split('.');
+			// return this.currentUserValue.setting.bind(split);
+		}
+		return this.currentUserValue.setting[prop];
+	}
 
-  loggedIn(): boolean {
-    return this.currentUser !== null;
-  }
+	verifyToken(token?: string): Promise<any> {
+		return new Promise<any>((resolve, reject) => {
+			this.http.get(this.config.loginEndPoint).subscribe(res => {
+				if (res.success) {
+					this._currentUserValue = res.result;
+					this._currentUserSubject.next(res.result);
+					resolve(true);
+				}
+			}, err => reject(err));
+		});
+	}
 
-  logout(): Observable<any> {
-    this._currentUserValue.next(null);
-    return this._currentUserValue.asObservable();
-  }
+	loggedIn(): boolean {
+		return this._currentUserValue !== null;
+	}
+
+	logout(endPoint: string): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			this.http.get(endPoint || this.config.logoutEndPoint).subscribe(res => {
+				this._currentUserSubject.next(null);
+				this._currentUserValue = null;
+				this.router.navigateByUrl(this.config.guards.loggedOutGuard.redirectUrl);
+				resolve(true);
+			}, (err) => reject);
+		});
+	}
 }

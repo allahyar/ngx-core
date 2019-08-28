@@ -20,12 +20,12 @@ export class AuthModule {
 			ngModule: AuthModule,
 			providers: [
 				{provide: 'authConfig', useValue: config},
-				AuthenticationService, LoggedInAuth, LoggedOutAuth
-				// {
-				//   provide: HTTP_INTERCEPTORS,
-				//   useClass: JwtInterceptor,
-				//   multi: true,
-				// }
+				AuthenticationService, LoggedInAuth, LoggedOutAuth,
+				{
+					provide: HTTP_INTERCEPTORS,
+					useClass: JwtInterceptor,
+					multi: true
+				}
 			]
 		};
 	}

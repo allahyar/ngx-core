@@ -1,7 +1,7 @@
 import {APP_INITIALIZER, Inject, Injector, ModuleWithProviders, NgModule} from '@angular/core';
 import {Query} from './classes/query.class';
 import {QueryService} from './services/query.service';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {CoreModuleConfig} from './interfaces/config.model';
 import {DEFAULT_LANG, QUERY_SERVICE_TOKEN, SUPPORT_LANG} from './tokens';
 import {InjectToken} from './decorators/inject.decorator';
@@ -10,6 +10,7 @@ import {init_app, translateModuleOptions} from './util/helper';
 import {UiService} from './services/ui.service';
 import {CoreTranslateService} from './services/core-translate.service';
 import {AppLoadService} from './services/app-load-service.service';
+import {CoreHttpInterceptor} from './interceptors/core=http.interceptor';
 
 
 @NgModule({
@@ -58,6 +59,11 @@ export class CoreModule {
 				AppLoadService,
 				{provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true},
 				{provide: 'config', useValue: config},
+				{
+					provide: HTTP_INTERCEPTORS,
+					useClass: CoreHttpInterceptor,
+					multi: true,
+				},
 				{
 					provide: Query,
 					useClass: QueryService

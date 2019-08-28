@@ -1,1 +1,71 @@
-/* You can add global styles to this file, and also import other style files */
+.toast-panel {
+	//right: auto !important;
+	right: 0 !important;
+	bottom: 1rem !important;
+}
+
+.toast-card {
+	background-color: #fff !important;
+	box-shadow: rgba(0, 0, 0, 0.15) 0 5px 30px 5px;
+	border-radius: .30rem 0 0 .30rem !important;
+	overflow: hidden;
+
+	.lifetime-progress {
+		background-color: #00a380!important;
+		position: absolute;
+		bottom: 0px;
+	}
+	&.success {
+		.toast-icon {
+			background-color: #00a380;
+			color: #ffffff;
+		}
+
+		.msg-caption {
+			color: #00a380;
+		}
+
+		.msg-text {
+			color: #b7b7b7;
+		}
+	}
+}
+
+.toast-container {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	border-radius: .30rem 0 0 .30rem !important;
+	overflow: hidden;
+
+	.toast-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 45px;
+		height: 100%;
+		color: #ffffff;
+	}
+
+	.toast-message {
+		flex-grow: 1;
+		padding: 8px;
+		display: flex;
+		flex-direction: column;
+		color: #8c8c8c;
+
+		.msg-caption {
+			font-weight: 500;
+			font-size: .9rem;
+		}
+
+		.msg-text {
+			font-size: .8rem;
+		}
+	}
+
+}
+
+lib-toast-template {
+	display: contents;
+}

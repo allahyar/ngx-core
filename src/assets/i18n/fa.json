@@ -1,3 +1,10 @@
 {
-  "HELLO": "سلام"
+	"HELLO": "سلام",
+	"INFO_TITLE": "تست",
+	"GLOBAL": {
+		"ERROR_TITLE": "اخطار",
+		"OK_TITLE": "موفق",
+		"WARNING_TITLE": "هشدار",
+		"INFO_TITLE": "پیام"
+	}
 }

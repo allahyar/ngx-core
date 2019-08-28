@@ -26,6 +26,7 @@
 		"@ngx-translate/http-loader": "^4.0.0",
 		"core": "file:projects/core/dist",
 		"ngx-cool-dialogs": "^0.1.3",
+		"ngx-toast-notifications": "^1.0.2",
 		"rxjs": "~6.4.0",
 		"rxjs-compat": "^6.5.2",
 		"tslib": "^1.9.0",

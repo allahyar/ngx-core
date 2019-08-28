@@ -1,7 +1,10 @@
-import {AuthModuleConfig, CoreModuleConfig} from 'core/lib/interfaces/config.model';
-import {UiModuleConfig} from '../../projects/core/src/lib/interfaces/config.model';
+import {AuthModuleConfig, CoreModuleConfig, UiModuleConfig} from 'core/lib/interfaces/config.model';
 
 export const CORE_CONFIG: CoreModuleConfig = {
+	api: {
+		baseUrl: 'http://sp.bluetooth.ir/api/v1/',
+		useInterceptor: false
+	},
 	storage: {
 		prefix: 'ZarsamErpAPP'
 	},
@@ -13,7 +16,10 @@ export const CORE_CONFIG: CoreModuleConfig = {
 
 
 export const AUTH_CONFIG: AuthModuleConfig = {
-	loginEndPoint: 'http://localhost:5000/connect/token',
+	loginEndPoint: 'auth/verify_token',
+	logoutEndPoint: 'auth/asas',
+	headerPrefix: 'Bearer',
+	loginTokenName: 'satellizer_token',
 	guards: {
 		loggedInGuard: {
 			redirectUrl: '/login'
@@ -32,5 +38,8 @@ export const UI_CONFIG: UiModuleConfig = {
 		okButtonText: 'HOME',
 		cancelButtonText: 'No',
 		color: '#8030c3',
+	},
+	toast: {
+		duration: 2000
 	}
 };

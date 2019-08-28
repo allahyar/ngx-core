@@ -1,10 +1,14 @@
 import {NgxCoolDialogTheme} from 'ngx-cool-dialogs';
 
 export interface CoreModuleConfig {
-	storage?: {
+	api: {
+		baseUrl: string;
+		useInterceptor: boolean;
+	};
+	storage: {
 		prefix: string
 	};
-	language?: {
+	language: {
 		default: string;
 		support: string[];
 	};
@@ -12,6 +16,9 @@ export interface CoreModuleConfig {
 
 export interface AuthModuleConfig {
 	loginEndPoint: string;
+	logoutEndPoint: string;
+	loginTokenName: string;
+	headerPrefix: string;
 	guards: {
 		loggedInGuard: {
 			redirectUrl: string;
@@ -34,6 +41,9 @@ export interface UiModuleConfig {
 		okButtonText: string;
 		cancelButtonText: string;
 		color: string;
+	};
+	toast: {
+		duration: number;
 	};
 }
 
