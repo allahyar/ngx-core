@@ -15,7 +15,8 @@ export class AppLoadService {
 		return new Promise((resolve, reject) => {
 			this._translateService.loaded.subscribe(completed => {
 				if (completed) {
-					this._authService.verifyToken().then(loggedIn => {
+					console.log('test');
+					this._authService.verifyToken().subscribe(res => {
 						resolve();
 					});
 				}

@@ -36,21 +36,21 @@ export class AppComponent implements OnInit {
 		if (this.storage.has('allahyar')) {
 			console.log('asas');
 		}
-		this.auth.verifyToken().then(res => {
-			console.log(this.auth.currentUserValue);
-		});
+		// this.auth.verifyToken().then(res => {
+		// 	console.log(this.auth.currentUserValue);
+		// });
 
 
-		console.log(this.auth.currentUser);
+		console.log(this.auth.currentUserValue);
 
 
 	}
 
 
 	ngOnInit(): void {
-		this.queryService.delete({url: ''}).subscribe(res => {
-			console.log(res);
-		});
+		// this.queryService.delete({url: ''}).subscribe(res => {
+		// 	console.log(res);
+		// });
 		this.dialog.prompt('HELLO');
 		setTimeout(() => {
 			// this.dialog.prompt('HELLO');

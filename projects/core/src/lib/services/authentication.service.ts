@@ -5,6 +5,7 @@ import {InjectToken} from '../decorators/inject.decorator';
 import {AuthModuleConfig} from '../interfaces/config.model';
 import {UserRespone} from '../interfaces/auth.model';
 import {Router} from '@angular/router';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationService {
@@ -34,16 +35,16 @@ export class AuthenticationService {
 		return this.currentUserValue.setting[prop];
 	}
 
-	verifyToken(token?: string): Promise<any> {
-		return new Promise<any>((resolve, reject) => {
-			this.http.get(this.config.loginEndPoint).subscribe(res => {
-				if (res.success) {
-					this._currentUserValue = res.result;
-					this._currentUserSubject.next(res.result);
-					resolve(true);
-				}
-			}, err => reject(err));
-		});
+	verifyToken(token?: string): Observable<boolean> {
+		return this.http.get(this.config.loginEndPoint).pipe(map(res => {
+			if (res.success) {
+				console.log(res.success);
+				this._currentUserValue = res.result;
+				this._currentUserSubject.next(res.result);
+				return true;
+			}
+			return false;
+		}));
 	}
 
 	loggedIn(): boolean {
