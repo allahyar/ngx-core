@@ -3,23 +3,23 @@ import {HttpProvider} from './http-provider.service';
 import {Observable, ReplaySubject} from 'rxjs';
 import {InjectToken} from '../decorators/inject.decorator';
 import {AuthModuleConfig} from '../interfaces/config.model';
-import {UserRespone} from '../interfaces/auth.model';
+import {UserResponse} from '../interfaces/auth.model';
 import {Router} from '@angular/router';
 import {map} from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationService {
 
-	@InjectToken(HttpProvider) http: HttpProvider<UserRespone>;
+	@InjectToken(HttpProvider) http: HttpProvider<UserResponse>;
 
-	private _currentUserSubject = new ReplaySubject<UserRespone>(1);
-	private _currentUserValue: UserRespone;
+	private _currentUserSubject = new ReplaySubject<UserResponse>(1);
+	private _currentUserValue: UserResponse;
 
 	constructor(@Inject('authConfig') private config: AuthModuleConfig,
 				private router: Router) {
 	}
 
-	get currentUserValue(): UserRespone {
+	get currentUserValue(): UserResponse {
 		return this._currentUserValue;
 	}
 
@@ -35,12 +35,17 @@ export class AuthenticationService {
 		return this.currentUserValue.setting[prop];
 	}
 
+	login(username: string, password: string) {
+
+	}
+
 	verifyToken(token?: string): Observable<boolean> {
-		return this.http.get(this.config.loginEndPoint).pipe(map(res => {
+		return this.http.get(this.config.tokenVerifyEndPoint).pipe(map(res => {
 			if (res.success) {
 				console.log(res.success);
 				this._currentUserValue = res.result;
 				this._currentUserSubject.next(res.result);
+				this.router.navigateByUrl(this.config.loginEndPoint);
 				return true;
 			}
 			return false;

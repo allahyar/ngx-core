@@ -8,19 +8,30 @@ import {DialogService} from './services/dialog.service';
 import {ToastNotificationsModule} from 'ngx-toast-notifications';
 import {ToastTemplateComponent} from './components/toast-template.component';
 import {ToastService} from './services/toast.service';
+import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {ModalModule} from 'ngx-bootstrap';
+import {ModalTemplateComponent} from './components/modal-template.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
 	declarations: [
+		ModalTemplateComponent,
 		ToastTemplateComponent
 	],
 	imports: [
 		BrowserAnimationsModule,
 		NgxCoolDialogsModule.forRoot(DIALOG_CONFIG_DEFAULTS),
 		ToastNotificationsModule.forRoot({component: ToastTemplateComponent}),
-		CommonModule
+		NgbDatepickerModule,
+		ModalModule.forRoot(),
+		CommonModule,
+		ReactiveFormsModule
 	],
-	entryComponents: [ToastTemplateComponent]
+	entryComponents: [
+		ModalTemplateComponent,
+		ToastTemplateComponent
+	]
 })
 export class UIModule {
 

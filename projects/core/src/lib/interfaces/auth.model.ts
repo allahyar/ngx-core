@@ -1,4 +1,4 @@
-export interface UserRespone {
+export interface UserResponse {
 	full_name: string;
 	family: string;
 	is_active: number;
@@ -8,7 +8,6 @@ export interface UserRespone {
 	role_perms: string[];
 	setting: SettingResponse;
 	username: string;
-
 }
 
 export interface SettingResponse {

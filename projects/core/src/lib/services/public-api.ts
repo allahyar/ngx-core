@@ -7,3 +7,4 @@ export * from './dialog.service';
 export * from './core-translate.service';
 export * from './ui.service';
 export * from './toast.service';
+export * from './modal.service';

@@ -19,6 +19,8 @@ export interface AuthModuleConfig {
 	logoutEndPoint: string;
 	loginTokenName: string;
 	headerPrefix: string;
+	useTokenVerify: boolean;
+	tokenVerifyEndPoint: string;
 	guards: {
 		loggedInGuard: {
 			redirectUrl: string;

@@ -7,13 +7,16 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {AUTH_CONFIG, CORE_CONFIG, UI_CONFIG} from './module.config';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthModule, CoreModule, UIModule} from 'core';
+import {ModalTestComponent} from './modal-test/modal-test.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		LoginComponent,
-		DashboardComponent
+		DashboardComponent,
+		ModalTestComponent
 	],
 	imports: [
 		BrowserModule,
@@ -21,7 +24,11 @@ import {AuthModule, CoreModule, UIModule} from 'core';
 		CoreModule.forRoot(CORE_CONFIG),
 		UIModule.forRoot(UI_CONFIG),
 		HttpClientModule,
-		RoutingModule
+		RoutingModule,
+		ReactiveFormsModule
+	],
+	entryComponents: [
+		ModalTestComponent
 	],
 	providers: [],
 	bootstrap: [AppComponent]

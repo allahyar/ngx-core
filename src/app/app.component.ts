@@ -5,10 +5,12 @@ import {
 	DialogService,
 	InjectToken,
 	LocalStorage,
+	ModalService,
 	QueryService,
 	ToastService,
 	UiService
 } from 'core';
+import {ModalTestComponent} from './modal-test/modal-test.component';
 
 
 @Component({
@@ -25,6 +27,7 @@ export class AppComponent implements OnInit {
 	constructor(private storage: LocalStorage,
 				private uiService: UiService,
 				private translate: CoreTranslateService,
+				private _modalService: ModalService,
 				private dialog: DialogService,
 				private toast: ToastService,
 				private auth: AuthenticationService) {
@@ -51,11 +54,13 @@ export class AppComponent implements OnInit {
 		// this.queryService.delete({url: ''}).subscribe(res => {
 		// 	console.log(res);
 		// });
-		this.dialog.prompt('HELLO');
+		// this.dialog.prompt('HELLO');
+		this._modalService.open(ModalTestComponent, {title: 'asasas', data: {success: true}});
+
 		setTimeout(() => {
 			// this.dialog.prompt('HELLO');
 			// this.uiService.setDirection('ltr');
-			this.toast.success('HELLO', {name: 'allahyar'});
+			this.toast.success('HELLO', {name: 'ahmad'});
 
 		}, 2000);
 		//

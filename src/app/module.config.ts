@@ -16,10 +16,12 @@ export const CORE_CONFIG: CoreModuleConfig = {
 
 
 export const AUTH_CONFIG: AuthModuleConfig = {
-	loginEndPoint: 'auth/verify_token',
+	loginEndPoint: 'login',
 	logoutEndPoint: 'auth/asas',
+	tokenVerifyEndPoint: 'auth/verify_token',
 	headerPrefix: 'Bearer',
 	loginTokenName: 'satellizer_token',
+	useTokenVerify: true,
 	guards: {
 		loggedInGuard: {
 			redirectUrl: '/login'
