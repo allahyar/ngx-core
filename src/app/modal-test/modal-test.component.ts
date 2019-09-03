@@ -11,13 +11,14 @@ export class ModalTestComponent implements OnInit {
 	type: any;
 	data: any;
 
-	constructor(fb: FormBuilder) {
-		this.form = fb.group({
-			test: [null, Validators.required]
-		});
+	constructor(private fb: FormBuilder) {
+
 	}
 
 	ngOnInit() {
+		this.form = this.fb.group({
+			test: [null, Validators.required]
+		});
 	}
 
 }

@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
 		// 	console.log(res);
 		// });
 		// this.dialog.prompt('HELLO');
-		this._modalService.open(ModalTestComponent, {title: 'asasas', data: {success: true}});
+		this._modalService.open(ModalTestComponent, {title: 'New User', data: {success: true}});
 
 		setTimeout(() => {
 			// this.dialog.prompt('HELLO');

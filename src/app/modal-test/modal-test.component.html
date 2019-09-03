@@ -1,6 +1,11 @@
 <form [formGroup]="form">
 	<div class="form-group">
-		<label>Test</label>
+		<label>Full Name</label>
 		<input type="text" class="form-control" formControlName="test">
 	</div>
+	<button type="submit" class="btn btn-success" [disabled]="form.invalid">
+		Save
+	</button>
 </form>
+
+{{form.value|json}}

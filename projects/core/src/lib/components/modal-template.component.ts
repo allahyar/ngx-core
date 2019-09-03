@@ -9,7 +9,7 @@ import {
 	ViewContainerRef
 } from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
-import {FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
 	template: `
@@ -22,9 +22,6 @@ import {FormGroup} from '@angular/forms';
 		<div class="modal-body">
 			<form [formGroup]="form">
 				<ng-container #container></ng-container>
-				<button type="button" class="btn btn-success">
-					Save
-				</button>
 			</form>
 		</div>
 	`,
@@ -52,7 +49,9 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 		static: true
 	}) container: ViewContainerRef;
 
-	constructor(public modalRef: BsModalRef) {
+	constructor(public modalRef: BsModalRef,
+				private fb: FormBuilder) {
+		this.form = fb.group({});
 	}
 
 
