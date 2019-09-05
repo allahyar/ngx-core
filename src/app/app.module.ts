@@ -9,6 +9,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AuthModule, CoreModule, UIModule} from 'core';
 import {ModalTestComponent} from './modal-test/modal-test.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ModalTest2Component} from './modal-test2/modal-test2.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 		AppComponent,
 		LoginComponent,
 		DashboardComponent,
-		ModalTestComponent
+		ModalTestComponent,
+		ModalTest2Component
 	],
 	imports: [
 		BrowserModule,
@@ -25,10 +27,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 		UIModule.forRoot(UI_CONFIG),
 		HttpClientModule,
 		RoutingModule,
+		FormsModule,
 		ReactiveFormsModule
 	],
 	entryComponents: [
-		ModalTestComponent
+		ModalTestComponent,
+		ModalTest2Component
 	],
 	providers: [],
 	bootstrap: [AppComponent]

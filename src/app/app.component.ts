@@ -11,6 +11,7 @@ import {
 	UiService
 } from 'core';
 import {ModalTestComponent} from './modal-test/modal-test.component';
+import {BsModalRef} from 'ngx-bootstrap';
 
 
 @Component({
@@ -24,10 +25,12 @@ export class AppComponent implements OnInit {
 	@InjectToken(QueryService)
 	queryService: QueryService<any>;
 
+	@InjectToken(ModalService)
+	modal: ModalService;
+
 	constructor(private storage: LocalStorage,
 				private uiService: UiService,
 				private translate: CoreTranslateService,
-				private _modalService: ModalService,
 				private dialog: DialogService,
 				private toast: ToastService,
 				private auth: AuthenticationService) {
@@ -55,8 +58,10 @@ export class AppComponent implements OnInit {
 		// 	console.log(res);
 		// });
 		// this.dialog.prompt('HELLO');
-		this._modalService.open(ModalTestComponent, {title: 'New User', data: {success: true}});
+		const ref = this.modal.open(ModalTestComponent, {title: 'New User', data: {success: true}});
+		ref.onHide.subscribe(res => {
 
+		});
 		setTimeout(() => {
 			// this.dialog.prompt('HELLO');
 			// this.uiService.setDirection('ltr');

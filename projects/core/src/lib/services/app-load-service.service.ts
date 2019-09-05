@@ -18,7 +18,7 @@ export class AppLoadService {
 			this._translateService.loaded.subscribe(completed => {
 				if (completed) {
 					if (!this.config.useTokenVerify) {
-						reject();
+						resolve();
 						return true;
 					}
 					this._authService.verifyToken().subscribe(res => {
