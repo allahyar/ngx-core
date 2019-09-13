@@ -21,7 +21,7 @@ export class ModalTestComponent extends Modal implements OnInit {
 			setTimeout(() => {
 				observer.complete();
 				// this.modalRef.close();
-				this.modalRef.open(ModalTest2Component, {title: 'New User 2', data: {success: true}});
+				this.modalService.open(ModalTest2Component, {title: 'New User 2', data: {success: true}});
 
 			}, 4000);
 		}).subscribe(res => {

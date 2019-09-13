@@ -1639,7 +1639,7 @@ class Modal extends Base {
 __decorate([
     InjectToken(ModalService),
     __metadata("design:type", ModalService)
-], Modal.prototype, "modalRef", void 0);
+], Modal.prototype, "modalService", void 0);
 
 /**
  * @fileoverview added by tsickle

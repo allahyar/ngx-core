@@ -1856,7 +1856,7 @@ var Modal = /** @class */ (function (_super) {
     __decorate([
         InjectToken(ModalService),
         __metadata("design:type", ModalService)
-    ], Modal.prototype, "modalRef", void 0);
+    ], Modal.prototype, "modalService", void 0);
     return Modal;
 }(Base));
 
