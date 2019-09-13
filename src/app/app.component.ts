@@ -55,8 +55,10 @@ export class AppComponent implements OnInit {
 		// 	console.log(res);
 		// });
 		// this.dialog.prompt('HELLO');
-		this._modalService.open(ModalTestComponent, {title: 'New User', data: {success: true}});
-
+		const modal = this._modalService.open(ModalTestComponent, {title: 'New User', data: {success: true}});
+		modal.onSubmit.subscribe(res => {
+			console.log(modal.form.value);
+		});
 		setTimeout(() => {
 			// this.dialog.prompt('HELLO');
 			// this.uiService.setDirection('ltr');

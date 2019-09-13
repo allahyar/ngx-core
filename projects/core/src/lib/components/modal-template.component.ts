@@ -9,35 +9,43 @@ import {
 	ViewContainerRef
 } from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Subject} from 'rxjs';
 
 @Component({
 	template: `
 		<div class="modal-header">
 			<h5 class="modal-title">{{title}}</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onHide()">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div class="modal-body">
 			<form [formGroup]="form">
 				<ng-container #container></ng-container>
+				<button type="submit" class="btn btn-success" [disabled]="form.invalid" (click)="onSave()">
+					Save
+				</button>
+				<button type="button" class="btn btn-light" (click)="onClose()"></button>
 			</form>
 		</div>
+		{{form.value|json}}
+
 	`,
 	styleUrls: ['./modal-template.component.css']
 })
 export class ModalTemplateComponent implements OnInit, OnDestroy {
 
-	form: FormGroup;
+	public form: FormGroup;
+	public onSubmit: Subject<boolean>;
 
-	title: string;
-	type: any;
-	data: any;
+	public title: string;
+	public type: any;
+	public data: any;
 
 
-	component: any;
-	componentRef: ComponentRef<any>;
+	public component: any;
+	public componentRef: ComponentRef<any>;
 
 	@Input() set componentType(c: any) {
 		this.component = c;
@@ -52,6 +60,7 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 	constructor(public modalRef: BsModalRef,
 				private fb: FormBuilder) {
 		this.form = fb.group({});
+		this.onSubmit = new Subject();
 	}
 
 
@@ -66,6 +75,20 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+	}
+
+	public onSave(): void {
+		this.onSubmit.next(true);
+		this.modalRef.hide();
+	}
+
+	public onClose(): void {
+		this.onSubmit.next(false);
+		this.modalRef.hide();
+	}
+
+	public onHide() {
+		this.modalRef.hide();
 	}
 
 	ngOnDestroy() {

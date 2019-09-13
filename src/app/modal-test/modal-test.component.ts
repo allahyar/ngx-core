@@ -6,7 +6,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class ModalTestComponent implements OnInit {
 
-	form: FormGroup;
+	public form: FormGroup;
 	@Input() content = '';
 	type: any;
 	data: any;
@@ -16,9 +16,6 @@ export class ModalTestComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.form = this.fb.group({
-			test: [null, Validators.required]
-		});
 	}
 
 }

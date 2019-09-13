@@ -1,12 +1,10 @@
 import {
-	ComponentFactory,
 	ComponentFactoryResolver,
-	ComponentRef,
 	Inject,
 	Injectable,
-	Injector, ViewContainerRef
+	Injector,
 } from '@angular/core';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {BsModalService} from 'ngx-bootstrap';
 import {UiModuleConfig} from '../interfaces/config.model';
 import {ModalTemplateComponent} from '../components/modal-template.component';
 
@@ -22,7 +20,7 @@ export class ModalService {
 	}
 
 
-	open(componentType: any, config?: IModalConfig): BsModalRef {
+	open(componentType: any, config?: IModalConfig): ModalTemplateComponent {
 
 		const ref = this._modalService.show(ModalTemplateComponent, {class: config.class});
 		const content = (ref.content as ModalTemplateComponent);
@@ -32,7 +30,7 @@ export class ModalService {
 		content.type = config.type || 'add';
 		content.data = config.data || {};
 
-		return ref;
+		return content;
 	}
 
 }
