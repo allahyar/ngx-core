@@ -9,43 +9,45 @@ import {
 	ViewContainerRef
 } from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Subject} from 'rxjs';
+import {NgForm} from '@angular/forms';
 
 @Component({
 	template: `
 		<div class="modal-header">
 			<h5 class="modal-title">{{title}}</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onHide()">
+			<button type="button" class="close" (click)="onClose()">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div class="modal-body">
-			<form [formGroup]="form">
-				<ng-container #container></ng-container>
-				<button type="submit" class="btn btn-success" [disabled]="form.invalid" (click)="onSave()">
+			<form #f="ngForm">
+				<ng-container #container libNgForm></ng-container>
+				<button type="submit" class="btn btn-success mr-2" *ngIf="loading"
+						[progress]="cri.reqObservable"
+						[disabled]="f.invalid"
+						(click)="onSubmit()">
 					Save
 				</button>
-				<button type="button" class="btn btn-light" (click)="onClose()"></button>
+				<button type="submit" class="btn btn-success" (click)="onClose()">
+					Close
+				</button>
 			</form>
-		</div>
-		{{form.value|json}}
 
+		</div>
 	`,
 	styleUrls: ['./modal-template.component.css']
 })
 export class ModalTemplateComponent implements OnInit, OnDestroy {
 
-	public form: FormGroup;
-	public onSubmit: Subject<boolean>;
+	@ViewChild('f', {static: true}) form: NgForm;
+	title: string;
+	type: any;
+	data: any;
 
-	public title: string;
-	public type: any;
-	public data: any;
+	component: any;
+	componentRef: ComponentRef<any>;
 
-
-	public component: any;
-	public componentRef: ComponentRef<any>;
+	loading = false;
 
 	@Input() set componentType(c: any) {
 		this.component = c;
@@ -57,11 +59,7 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 		static: true
 	}) container: ViewContainerRef;
 
-	constructor(public modalRef: BsModalRef,
-				private fb: FormBuilder) {
-		this.form = fb.group({});
-		this.onSubmit = new Subject();
-	}
+	constructor(private modalRef: BsModalRef) {	}
 
 
 	renderContent() {
@@ -72,23 +70,10 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 		const componentRef = this.container.createComponent<any>(componentFactory);
 		componentRef.instance.form = this.form;
 		this.componentRef = componentRef;
+		this.loading = true;
 	}
 
 	ngOnInit() {
-	}
-
-	public onSave(): void {
-		this.onSubmit.next(true);
-		this.modalRef.hide();
-	}
-
-	public onClose(): void {
-		this.onSubmit.next(false);
-		this.modalRef.hide();
-	}
-
-	public onHide() {
-		this.modalRef.hide();
 	}
 
 	ngOnDestroy() {
@@ -97,4 +82,17 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 		}
 	}
 
+
+	onSubmit() {
+		this.componentRef.instance.onSave(this.form.value);
+
+	}
+
+	onClose() {
+		this.modalRef.hide();
+	}
+
+	get cri(): any {
+		return this.componentRef.instance;
+	}
 }
