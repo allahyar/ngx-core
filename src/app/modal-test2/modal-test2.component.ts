@@ -13,11 +13,9 @@ export class ModalTest2Component extends Modal {
   }
 
 	onSave(data: any): any {
-		console.log(data);
-		this.reqObservable = new Observable(observer => {
+		return new Observable(observer => {
 			setTimeout(() => {
 				observer.complete();
-				this.modalRef.close();
 			}, 4000);
 		}).subscribe(res => {
 

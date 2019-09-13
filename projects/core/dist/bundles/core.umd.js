@@ -718,7 +718,7 @@
                 function (completed) {
                     if (completed) {
                         if (!_this.config.useTokenVerify) {
-                            reject();
+                            resolve();
                             return true;
                         }
                         _this._authService.verifyToken().subscribe((/**
@@ -1460,10 +1460,9 @@
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ModalTemplateComponent = /** @class */ (function () {
-        function ModalTemplateComponent(modalRef, fb) {
+        function ModalTemplateComponent(modalRef) {
             this.modalRef = modalRef;
-            this.fb = fb;
-            this.form = fb.group({});
+            this.loading = false;
         }
         Object.defineProperty(ModalTemplateComponent.prototype, "componentType", {
             set: /**
@@ -1472,6 +1471,7 @@
              */
             function (c) {
                 this.component = c;
+                this.onSubmit = new rxjs.Subject();
                 this.renderContent();
             },
             enumerable: true,
@@ -1495,6 +1495,7 @@
             var componentRef = this.container.createComponent(componentFactory);
             componentRef.instance.form = this.form;
             this.componentRef = componentRef;
+            this.loading = true;
         };
         /**
          * @return {?}
@@ -1515,18 +1516,80 @@
                 this.componentRef.destroy();
             }
         };
+        /**
+         * @return {?}
+         */
+        ModalTemplateComponent.prototype.onSave = /**
+         * @return {?}
+         */
+        function () {
+            var _this = this;
+            /** @type {?} */
+            var resolveModalState = (/**
+             * @return {?}
+             */
+            function () {
+                _this.onSubmit.next(true);
+                _this.modalRef.hide();
+            });
+            this.promise = this.cri.onSave(this.form.value);
+            /** @type {?} */
+            var isSubscription = this.promise instanceof rxjs.Subscription;
+            if (isSubscription) {
+                /** @type {?} */
+                var promise = new Promise((/**
+                 * @param {?} resolve
+                 * @return {?}
+                 */
+                function (resolve) {
+                    ((/** @type {?} */ (_this.promise))).add(resolve);
+                }));
+                if (promise.finally) {
+                    promise.finally(resolveModalState);
+                }
+            }
+        };
+        /**
+         * @return {?}
+         */
+        ModalTemplateComponent.prototype.onClose = /**
+         * @return {?}
+         */
+        function () {
+            this.onSubmit.next(false);
+            this.modalRef.hide();
+        };
+        /**
+         * @return {?}
+         */
+        ModalTemplateComponent.prototype.onHide = /**
+         * @return {?}
+         */
+        function () {
+            this.modalRef.hide();
+        };
+        Object.defineProperty(ModalTemplateComponent.prototype, "cri", {
+            get: /**
+             * @return {?}
+             */
+            function () {
+                return this.componentRef.instance;
+            },
+            enumerable: true,
+            configurable: true
+        });
         ModalTemplateComponent.decorators = [
             { type: core.Component, args: [{
-                        template: "\n\t\t<div class=\"modal-header\">\n\t\t\t<h5 class=\"modal-title\">{{title}}</h5>\n\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\" (click)=\"modalRef.hide()\">\n\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t\t</button>\n\t\t</div>\n\t\t<div class=\"modal-body\">\n\t\t\t<form [formGroup]=\"form\">\n\t\t\t\t<ng-container #container></ng-container>\n\t\t\t</form>\n\t\t</div>\n\t",
+                        template: "\n\t\t<div class=\"modal-header\">\n\t\t\t<h5 class=\"modal-title\">{{title}}</h5>\n\t\t\t<button type=\"button\" class=\"close\" (click)=\"onHide()\">\n\t\t\t\t<span aria-hidden=\"true\">&times;</span>\n\t\t\t</button>\n\t\t</div>\n\t\t<div class=\"modal-body\">\n\t\t\t<form #f=\"ngForm\">\n\t\t\t\t<ng-container #container libNgForm></ng-container>\n\t\t\t\t<button type=\"submit\" class=\"btn btn-success mr-2\" *ngIf=\"loading\"\n\t\t\t\t\t\t[progress]=\"promise\"\n\t\t\t\t\t\t[disabled]=\"f.invalid\"\n\t\t\t\t\t\t(click)=\"onSave()\">\n\t\t\t\t\tSave\n\t\t\t\t</button>\n\t\t\t\t<button type=\"submit\" class=\"btn btn-success\" (click)=\"onClose()\">\n\t\t\t\t\tClose\n\t\t\t\t</button>\n\t\t\t</form>\n\n\t\t</div>\n\t",
                         styles: [""]
                     }] }
         ];
         /** @nocollapse */
         ModalTemplateComponent.ctorParameters = function () { return [
-            { type: ngxBootstrap.BsModalRef },
-            { type: forms.FormBuilder }
+            { type: ngxBootstrap.BsModalRef }
         ]; };
         ModalTemplateComponent.propDecorators = {
+            form: [{ type: core.ViewChild, args: ['f', { static: true },] }],
             componentType: [{ type: core.Input }],
             container: [{ type: core.ViewChild, args: ['container', {
                             read: core.ViewContainerRef,
@@ -1534,6 +1597,139 @@
                         },] }]
         };
         return ModalTemplateComponent;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /** @type {?} */
+    var formDirectiveProvider = {
+        provide: forms.ControlContainer,
+        useExisting: core.forwardRef((/**
+         * @return {?}
+         */
+        function () { return forms.NgForm; }))
+    };
+    var NgFormDirective = /** @class */ (function () {
+        function NgFormDirective() {
+        }
+        NgFormDirective.decorators = [
+            { type: core.Directive, args: [{
+                        selector: '[libNgForm]',
+                        providers: [formDirectiveProvider],
+                        exportAs: 'ngForm'
+                    },] }
+        ];
+        /** @nocollapse */
+        NgFormDirective.ctorParameters = function () { return []; };
+        return NgFormDirective;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var ProgressButtonDirective = /** @class */ (function () {
+        function ProgressButtonDirective(el) {
+            this.isPromiseDone = false;
+            this.element = el.nativeElement;
+        }
+        Object.defineProperty(ProgressButtonDirective.prototype, "progress", {
+            set: /**
+             * @param {?} value
+             * @return {?}
+             */
+            function (value) {
+                /** @type {?} */
+                var isSubscription = value instanceof rxjs.Subscription;
+                if (isSubscription) {
+                    this.promise = new Promise((/**
+                     * @param {?} resolve
+                     * @return {?}
+                     */
+                    function (resolve) {
+                        ((/** @type {?} */ (value))).add(resolve);
+                    }));
+                    this.initPromiseHandler();
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @return {?}
+         */
+        ProgressButtonDirective.prototype.disabled = /**
+         * @return {?}
+         */
+        function () {
+            this.element.setAttribute('disabled', 'disabled');
+        };
+        /**
+         * @return {?}
+         */
+        ProgressButtonDirective.prototype.enabled = /**
+         * @return {?}
+         */
+        function () {
+            this.element.removeAttribute('disabled');
+        };
+        /**
+         * @return {?}
+         */
+        ProgressButtonDirective.prototype.initPromiseHandler = /**
+         * @return {?}
+         */
+        function () {
+            var _this = this;
+            if (this.element && this.promise) {
+                this.disabled();
+                /** @type {?} */
+                var promise = this.promise;
+                /** @type {?} */
+                var resolveLoadingState = (/**
+                 * @return {?}
+                 */
+                function () {
+                    _this.isPromiseDone = true;
+                    if (_this.isPromiseDone) {
+                        _this.enabled();
+                    }
+                });
+                if (promise.finally) {
+                    promise.finally(resolveLoadingState);
+                }
+                else {
+                    promise
+                        .then(resolveLoadingState)
+                        .catch(resolveLoadingState);
+                }
+            }
+        };
+        /**
+         * @return {?}
+         */
+        ProgressButtonDirective.prototype.handleButton = /**
+         * @return {?}
+         */
+        function () {
+            // some code
+        };
+        ProgressButtonDirective.decorators = [
+            { type: core.Directive, args: [{
+                        selector: '[progress]'
+                    },] }
+        ];
+        /** @nocollapse */
+        ProgressButtonDirective.ctorParameters = function () { return [
+            { type: core.ElementRef }
+        ]; };
+        ProgressButtonDirective.propDecorators = {
+            progress: [{ type: core.Input }],
+            handleButton: [{ type: core.HostListener, args: ['click',] }]
+        };
+        return ProgressButtonDirective;
     }());
 
     /**
@@ -1557,7 +1753,8 @@
                 providers: [
                     { provide: 'uiConfig', useValue: config },
                     DialogService,
-                    ToastService
+                    ToastService,
+                    ngxBootstrap.BsModalRef
                 ]
             };
         };
@@ -1565,7 +1762,9 @@
             { type: core.NgModule, args: [{
                         declarations: [
                             ModalTemplateComponent,
-                            ToastTemplateComponent
+                            ToastTemplateComponent,
+                            NgFormDirective,
+                            ProgressButtonDirective
                         ],
                         imports: [
                             animations.BrowserAnimationsModule,
@@ -1574,6 +1773,7 @@
                             ngBootstrap.NgbDatepickerModule,
                             ngxBootstrap.ModalModule.forRoot(),
                             common.CommonModule,
+                            forms.FormsModule,
                             forms.ReactiveFormsModule
                         ],
                         entryComponents: [
@@ -1622,6 +1822,71 @@
         };
         return Base;
     }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var ModalService = /** @class */ (function () {
+        function ModalService(_modalService, resolver, modalRef, injector, config) {
+            this._modalService = _modalService;
+            this.resolver = resolver;
+            this.modalRef = modalRef;
+            this.injector = injector;
+            this.config = config;
+        }
+        /**
+         * @param {?} componentType
+         * @param {?=} config
+         * @return {?}
+         */
+        ModalService.prototype.open = /**
+         * @param {?} componentType
+         * @param {?=} config
+         * @return {?}
+         */
+        function (componentType, config) {
+            this.modalRef = this._modalService.show(ModalTemplateComponent, { class: config.class });
+            /** @type {?} */
+            var content = this.modalRef.content;
+            content.componentType = componentType;
+            content.title = config.title || 'title';
+            content.type = config.type || 'add';
+            content.data = config.data || {};
+            return content;
+        };
+        ModalService.decorators = [
+            { type: core.Injectable, args: [{
+                        providedIn: 'root'
+                    },] }
+        ];
+        /** @nocollapse */
+        ModalService.ctorParameters = function () { return [
+            { type: ngxBootstrap.BsModalService },
+            { type: core.ComponentFactoryResolver },
+            { type: ngxBootstrap.BsModalRef },
+            { type: core.Injector },
+            { type: undefined, decorators: [{ type: core.Inject, args: ['uiConfig',] }] }
+        ]; };
+        /** @nocollapse */ ModalService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function ModalService_Factory() { return new ModalService(core.ɵɵinject(modal.BsModalService), core.ɵɵinject(core.ComponentFactoryResolver), core.ɵɵinject(modal.BsModalRef), core.ɵɵinject(core.INJECTOR), core.ɵɵinject("uiConfig")); }, token: ModalService, providedIn: "root" });
+        return ModalService;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var Modal = /** @class */ (function (_super) {
+        __extends(Modal, _super);
+        function Modal() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        __decorate([
+            InjectToken(ModalService),
+            __metadata("design:type", ModalService)
+        ], Modal.prototype, "modalRef", void 0);
+        return Modal;
+    }(Base));
 
     /**
      * @fileoverview added by tsickle
@@ -1752,54 +2017,6 @@
         return LocalStorage;
     }());
 
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
-     */
-    var ModalService = /** @class */ (function () {
-        function ModalService(_modalService, resolver, injector, config) {
-            this._modalService = _modalService;
-            this.resolver = resolver;
-            this.injector = injector;
-            this.config = config;
-        }
-        /**
-         * @param {?} componentType
-         * @param {?=} config
-         * @return {?}
-         */
-        ModalService.prototype.open = /**
-         * @param {?} componentType
-         * @param {?=} config
-         * @return {?}
-         */
-        function (componentType, config) {
-            /** @type {?} */
-            var ref = this._modalService.show(ModalTemplateComponent, { class: config.class });
-            /** @type {?} */
-            var content = ((/** @type {?} */ (ref.content)));
-            content.componentType = componentType;
-            content.title = config.title || 'title';
-            content.type = config.type || 'add';
-            content.data = config.data || {};
-            return ref;
-        };
-        ModalService.decorators = [
-            { type: core.Injectable, args: [{
-                        providedIn: 'root'
-                    },] }
-        ];
-        /** @nocollapse */
-        ModalService.ctorParameters = function () { return [
-            { type: ngxBootstrap.BsModalService },
-            { type: core.ComponentFactoryResolver },
-            { type: core.Injector },
-            { type: undefined, decorators: [{ type: core.Inject, args: ['uiConfig',] }] }
-        ]; };
-        /** @nocollapse */ ModalService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function ModalService_Factory() { return new ModalService(core.ɵɵinject(modal.BsModalService), core.ɵɵinject(core.ComponentFactoryResolver), core.ɵɵinject(core.INJECTOR), core.ɵɵinject("uiConfig")); }, token: ModalService, providedIn: "root" });
-        return ModalService;
-    }());
-
     exports.AUTH_CONFIG_DEFAULTS = AUTH_CONFIG_DEFAULTS;
     exports.AuthModule = AuthModule;
     exports.AuthenticationService = AuthenticationService;
@@ -1818,6 +2035,7 @@
     exports.LoggedInAuth = LoggedInAuth;
     exports.LoggedOutAuth = LoggedOutAuth;
     exports.MODULE_CONFIG_DEFAULTS = MODULE_CONFIG_DEFAULTS;
+    exports.Modal = Modal;
     exports.ModalService = ModalService;
     exports.ModalTemplateComponent = ModalTemplateComponent;
     exports.QUERY_SERVICE_TOKEN = QUERY_SERVICE_TOKEN;
@@ -1837,6 +2055,9 @@
     exports.ɵf = CoreHttpInterceptor;
     exports.ɵg = TokenService;
     exports.ɵh = JwtInterceptor;
+    exports.ɵi = formDirectiveProvider;
+    exports.ɵj = NgFormDirective;
+    exports.ɵk = ProgressButtonDirective;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

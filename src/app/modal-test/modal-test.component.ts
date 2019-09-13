@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ControlContainer, NgForm} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {Modal} from 'core';
 import {ModalTest2Component} from '../modal-test2/modal-test2.component';
 
@@ -15,9 +15,9 @@ export class ModalTestComponent extends Modal implements OnInit {
 
 	}
 
-	onSave(data: any): any {
-		console.log(data);
-		this.reqObservable = new Observable(observer => {
+	onSave(data: any): Subscription {
+
+		return new Observable(observer => {
 			setTimeout(() => {
 				observer.complete();
 				// this.modalRef.close();
@@ -25,7 +25,7 @@ export class ModalTestComponent extends Modal implements OnInit {
 
 			}, 4000);
 		}).subscribe(res => {
-
+			console.log(res);
 		});
 	}
 

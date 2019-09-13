@@ -1,10 +1,10 @@
-import { InjectionToken, Injector, Injectable, Inject, ɵɵdefineInjectable, ɵɵinject, INJECTOR, APP_INITIALIZER, NgModule, Component, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { InjectionToken, Injector, Injectable, Inject, ɵɵdefineInjectable, ɵɵinject, INJECTOR, APP_INITIALIZER, NgModule, Component, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef, forwardRef, Directive, ElementRef, HostListener } from '@angular/core';
 import { __decorate, __metadata } from 'tslib';
 import { HttpClient, HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DOCUMENT, CommonModule } from '@angular/common';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { Router, RouterModule } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { NgxCoolDialogsService, NgxCoolDialogsModule } from 'ngx-cool-dialogs';
@@ -13,8 +13,8 @@ import { Toaster, ToastNotificationsModule } from 'ngx-toast-notifications';
 import { Toaster as Toaster$1 } from 'ngx-toast-notifications/dist/toaster';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { BsModalRef, ModalModule, BsModalService } from 'ngx-bootstrap';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { BsModalService as BsModalService$1 } from 'ngx-bootstrap/modal';
+import { ControlContainer, NgForm, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsModalService as BsModalService$1, BsModalRef as BsModalRef$1 } from 'ngx-bootstrap/modal';
 
 /**
  * @fileoverview added by tsickle
@@ -595,7 +595,7 @@ class AppLoadService {
             completed => {
                 if (completed) {
                     if (!this.config.useTokenVerify) {
-                        reject();
+                        resolve();
                         return true;
                     }
                     this._authService.verifyToken().subscribe((/**
@@ -1258,12 +1258,10 @@ ToastService.ctorParameters = () => [
 class ModalTemplateComponent {
     /**
      * @param {?} modalRef
-     * @param {?} fb
      */
-    constructor(modalRef, fb) {
+    constructor(modalRef) {
         this.modalRef = modalRef;
-        this.fb = fb;
-        this.form = fb.group({});
+        this.loading = false;
     }
     /**
      * @param {?} c
@@ -1271,6 +1269,7 @@ class ModalTemplateComponent {
      */
     set componentType(c) {
         this.component = c;
+        this.onSubmit = new Subject();
         this.renderContent();
     }
     /**
@@ -1288,6 +1287,7 @@ class ModalTemplateComponent {
         const componentRef = this.container.createComponent(componentFactory);
         componentRef.instance.form = this.form;
         this.componentRef = componentRef;
+        this.loading = true;
     }
     /**
      * @return {?}
@@ -1302,20 +1302,78 @@ class ModalTemplateComponent {
             this.componentRef.destroy();
         }
     }
+    /**
+     * @return {?}
+     */
+    onSave() {
+        /** @type {?} */
+        const resolveModalState = (/**
+         * @return {?}
+         */
+        () => {
+            this.onSubmit.next(true);
+            this.modalRef.hide();
+        });
+        this.promise = this.cri.onSave(this.form.value);
+        /** @type {?} */
+        const isSubscription = this.promise instanceof Subscription;
+        if (isSubscription) {
+            /** @type {?} */
+            const promise = new Promise((/**
+             * @param {?} resolve
+             * @return {?}
+             */
+            (resolve) => {
+                ((/** @type {?} */ (this.promise))).add(resolve);
+            }));
+            if (promise.finally) {
+                promise.finally(resolveModalState);
+            }
+        }
+    }
+    /**
+     * @return {?}
+     */
+    onClose() {
+        this.onSubmit.next(false);
+        this.modalRef.hide();
+    }
+    /**
+     * @return {?}
+     */
+    onHide() {
+        this.modalRef.hide();
+    }
+    /**
+     * @return {?}
+     */
+    get cri() {
+        return this.componentRef.instance;
+    }
 }
 ModalTemplateComponent.decorators = [
     { type: Component, args: [{
                 template: `
 		<div class="modal-header">
 			<h5 class="modal-title">{{title}}</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+			<button type="button" class="close" (click)="onHide()">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div class="modal-body">
-			<form [formGroup]="form">
-				<ng-container #container></ng-container>
+			<form #f="ngForm">
+				<ng-container #container libNgForm></ng-container>
+				<button type="submit" class="btn btn-success mr-2" *ngIf="loading"
+						[progress]="promise"
+						[disabled]="f.invalid"
+						(click)="onSave()">
+					Save
+				</button>
+				<button type="submit" class="btn btn-success" (click)="onClose()">
+					Close
+				</button>
 			</form>
+
 		</div>
 	`,
                 styles: [""]
@@ -1323,15 +1381,132 @@ ModalTemplateComponent.decorators = [
 ];
 /** @nocollapse */
 ModalTemplateComponent.ctorParameters = () => [
-    { type: BsModalRef },
-    { type: FormBuilder }
+    { type: BsModalRef }
 ];
 ModalTemplateComponent.propDecorators = {
+    form: [{ type: ViewChild, args: ['f', { static: true },] }],
     componentType: [{ type: Input }],
     container: [{ type: ViewChild, args: ['container', {
                     read: ViewContainerRef,
                     static: true
                 },] }]
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/** @type {?} */
+const formDirectiveProvider = {
+    provide: ControlContainer,
+    useExisting: forwardRef((/**
+     * @return {?}
+     */
+    () => NgForm))
+};
+class NgFormDirective {
+    constructor() {
+    }
+}
+NgFormDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[libNgForm]',
+                providers: [formDirectiveProvider],
+                exportAs: 'ngForm'
+            },] }
+];
+/** @nocollapse */
+NgFormDirective.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class ProgressButtonDirective {
+    /**
+     * @param {?} el
+     */
+    constructor(el) {
+        this.isPromiseDone = false;
+        this.element = el.nativeElement;
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set progress(value) {
+        /** @type {?} */
+        const isSubscription = value instanceof Subscription;
+        if (isSubscription) {
+            this.promise = new Promise((/**
+             * @param {?} resolve
+             * @return {?}
+             */
+            (resolve) => {
+                ((/** @type {?} */ (value))).add(resolve);
+            }));
+            this.initPromiseHandler();
+        }
+    }
+    /**
+     * @return {?}
+     */
+    disabled() {
+        this.element.setAttribute('disabled', 'disabled');
+    }
+    /**
+     * @return {?}
+     */
+    enabled() {
+        this.element.removeAttribute('disabled');
+    }
+    /**
+     * @return {?}
+     */
+    initPromiseHandler() {
+        if (this.element && this.promise) {
+            this.disabled();
+            /** @type {?} */
+            const promise = this.promise;
+            /** @type {?} */
+            const resolveLoadingState = (/**
+             * @return {?}
+             */
+            () => {
+                this.isPromiseDone = true;
+                if (this.isPromiseDone) {
+                    this.enabled();
+                }
+            });
+            if (promise.finally) {
+                promise.finally(resolveLoadingState);
+            }
+            else {
+                promise
+                    .then(resolveLoadingState)
+                    .catch(resolveLoadingState);
+            }
+        }
+    }
+    /**
+     * @return {?}
+     */
+    handleButton() {
+        // some code
+    }
+}
+ProgressButtonDirective.decorators = [
+    { type: Directive, args: [{
+                selector: '[progress]'
+            },] }
+];
+/** @nocollapse */
+ProgressButtonDirective.ctorParameters = () => [
+    { type: ElementRef }
+];
+ProgressButtonDirective.propDecorators = {
+    progress: [{ type: Input }],
+    handleButton: [{ type: HostListener, args: ['click',] }]
 };
 
 /**
@@ -1349,7 +1524,8 @@ class UIModule {
             providers: [
                 { provide: 'uiConfig', useValue: config },
                 DialogService,
-                ToastService
+                ToastService,
+                BsModalRef
             ]
         };
     }
@@ -1358,7 +1534,9 @@ UIModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [
                     ModalTemplateComponent,
-                    ToastTemplateComponent
+                    ToastTemplateComponent,
+                    NgFormDirective,
+                    ProgressButtonDirective
                 ],
                 imports: [
                     BrowserAnimationsModule,
@@ -1367,6 +1545,7 @@ UIModule.decorators = [
                     NgbDatepickerModule,
                     ModalModule.forRoot(),
                     CommonModule,
+                    FormsModule,
                     ReactiveFormsModule
                 ],
                 entryComponents: [
@@ -1400,6 +1579,67 @@ class Base {
         this.isAlive = false;
     }
 }
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class ModalService {
+    /**
+     * @param {?} _modalService
+     * @param {?} resolver
+     * @param {?} modalRef
+     * @param {?} injector
+     * @param {?} config
+     */
+    constructor(_modalService, resolver, modalRef, injector, config) {
+        this._modalService = _modalService;
+        this.resolver = resolver;
+        this.modalRef = modalRef;
+        this.injector = injector;
+        this.config = config;
+    }
+    /**
+     * @param {?} componentType
+     * @param {?=} config
+     * @return {?}
+     */
+    open(componentType, config) {
+        this.modalRef = this._modalService.show(ModalTemplateComponent, { class: config.class });
+        /** @type {?} */
+        const content = this.modalRef.content;
+        content.componentType = componentType;
+        content.title = config.title || 'title';
+        content.type = config.type || 'add';
+        content.data = config.data || {};
+        return content;
+    }
+}
+ModalService.decorators = [
+    { type: Injectable, args: [{
+                providedIn: 'root'
+            },] }
+];
+/** @nocollapse */
+ModalService.ctorParameters = () => [
+    { type: BsModalService },
+    { type: ComponentFactoryResolver },
+    { type: BsModalRef },
+    { type: Injector },
+    { type: undefined, decorators: [{ type: Inject, args: ['uiConfig',] }] }
+];
+/** @nocollapse */ ModalService.ngInjectableDef = ɵɵdefineInjectable({ factory: function ModalService_Factory() { return new ModalService(ɵɵinject(BsModalService$1), ɵɵinject(ComponentFactoryResolver), ɵɵinject(BsModalRef$1), ɵɵinject(INJECTOR), ɵɵinject("uiConfig")); }, token: ModalService, providedIn: "root" });
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Modal extends Base {
+}
+__decorate([
+    InjectToken(ModalService),
+    __metadata("design:type", ModalService)
+], Modal.prototype, "modalRef", void 0);
 
 /**
  * @fileoverview added by tsickle
@@ -1503,53 +1743,5 @@ LocalStorage.ctorParameters = () => [
 ];
 /** @nocollapse */ LocalStorage.ngInjectableDef = ɵɵdefineInjectable({ factory: function LocalStorage_Factory() { return new LocalStorage(ɵɵinject("config")); }, token: LocalStorage, providedIn: "root" });
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class ModalService {
-    /**
-     * @param {?} _modalService
-     * @param {?} resolver
-     * @param {?} injector
-     * @param {?} config
-     */
-    constructor(_modalService, resolver, injector, config) {
-        this._modalService = _modalService;
-        this.resolver = resolver;
-        this.injector = injector;
-        this.config = config;
-    }
-    /**
-     * @param {?} componentType
-     * @param {?=} config
-     * @return {?}
-     */
-    open(componentType, config) {
-        /** @type {?} */
-        const ref = this._modalService.show(ModalTemplateComponent, { class: config.class });
-        /** @type {?} */
-        const content = ((/** @type {?} */ (ref.content)));
-        content.componentType = componentType;
-        content.title = config.title || 'title';
-        content.type = config.type || 'add';
-        content.data = config.data || {};
-        return ref;
-    }
-}
-ModalService.decorators = [
-    { type: Injectable, args: [{
-                providedIn: 'root'
-            },] }
-];
-/** @nocollapse */
-ModalService.ctorParameters = () => [
-    { type: BsModalService },
-    { type: ComponentFactoryResolver },
-    { type: Injector },
-    { type: undefined, decorators: [{ type: Inject, args: ['uiConfig',] }] }
-];
-/** @nocollapse */ ModalService.ngInjectableDef = ɵɵdefineInjectable({ factory: function ModalService_Factory() { return new ModalService(ɵɵinject(BsModalService$1), ɵɵinject(ComponentFactoryResolver), ɵɵinject(INJECTOR), ɵɵinject("uiConfig")); }, token: ModalService, providedIn: "root" });
-
-export { AUTH_CONFIG_DEFAULTS, AuthModule, AuthenticationService, Base, CoreModule, CoreTranslateService, DEFAULT_LANG, DIALOG_CONFIG_DEFAULTS, DialogService, GlobalInject, HttpLoaderFactory, HttpProvider, InjectToken, LOCAL_STORAGE_CONFIG_DEFAULTS, LocalStorage, LoggedInAuth, LoggedOutAuth, MODULE_CONFIG_DEFAULTS, ModalService, ModalTemplateComponent, QUERY_SERVICE_TOKEN, Query, QueryService, SUPPORT_LANG, ToastService, ToastTemplateComponent, Token, TokenError, UIModule, UiService, init_app, isString, translateModuleOptions, AppLoadService as ɵa, CoreHttpInterceptor as ɵf, TokenService as ɵg, JwtInterceptor as ɵh };
+export { AUTH_CONFIG_DEFAULTS, AuthModule, AuthenticationService, Base, CoreModule, CoreTranslateService, DEFAULT_LANG, DIALOG_CONFIG_DEFAULTS, DialogService, GlobalInject, HttpLoaderFactory, HttpProvider, InjectToken, LOCAL_STORAGE_CONFIG_DEFAULTS, LocalStorage, LoggedInAuth, LoggedOutAuth, MODULE_CONFIG_DEFAULTS, Modal, ModalService, ModalTemplateComponent, QUERY_SERVICE_TOKEN, Query, QueryService, SUPPORT_LANG, ToastService, ToastTemplateComponent, Token, TokenError, UIModule, UiService, init_app, isString, translateModuleOptions, AppLoadService as ɵa, CoreHttpInterceptor as ɵf, TokenService as ɵg, JwtInterceptor as ɵh, formDirectiveProvider as ɵi, NgFormDirective as ɵj, ProgressButtonDirective as ɵk };
 //# sourceMappingURL=core.js.map

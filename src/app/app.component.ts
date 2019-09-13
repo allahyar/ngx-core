@@ -12,6 +12,7 @@ import {
 } from 'core';
 import {ModalTestComponent} from './modal-test/modal-test.component';
 import {BsModalRef} from 'ngx-bootstrap';
+import {mod} from 'ngx-bootstrap/chronos/utils';
 
 
 @Component({
@@ -58,9 +59,9 @@ export class AppComponent implements OnInit {
 		// 	console.log(res);
 		// });
 		// this.dialog.prompt('HELLO');
-		const ref = this.modal.open(ModalTestComponent, {title: 'New User', data: {success: true}});
-		ref.onHide.subscribe(res => {
-
+		const modal = this.modal.open(ModalTestComponent, {title: 'New User', data: {success: true}});
+		modal.onSubmit.subscribe(res => {
+			console.log(modal.form.value);
 		});
 		setTimeout(() => {
 			// this.dialog.prompt('HELLO');

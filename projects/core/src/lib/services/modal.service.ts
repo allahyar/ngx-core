@@ -16,8 +16,6 @@ import {BehaviorSubject, ReplaySubject, Subject} from 'rxjs';
 })
 export class ModalService {
 
-	onClose: BehaviorSubject<any> = new BehaviorSubject(null);
-
 	constructor(private _modalService: BsModalService,
 				private resolver: ComponentFactoryResolver,
 				public modalRef: BsModalRef,
@@ -26,7 +24,7 @@ export class ModalService {
 	}
 
 
-	open(componentType: any, config?: IModalConfig): any {
+	open(componentType: any, config?: IModalConfig): ModalTemplateComponent {
 
 		this.modalRef = this._modalService.show(ModalTemplateComponent, {class: config.class});
 		const content = this.modalRef.content;
@@ -36,11 +34,6 @@ export class ModalService {
 		content.type = config.type || 'add';
 		content.data = config.data || {};
 		return content;
-	}
-
-	close() {
-		this.modalRef.hide();
-		this.onClose.next(false);
 	}
 
 }

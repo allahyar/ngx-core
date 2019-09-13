@@ -10,12 +10,13 @@ import {
 } from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {NgForm} from '@angular/forms';
+import {Subject, Subscription} from 'rxjs';
 
 @Component({
 	template: `
 		<div class="modal-header">
 			<h5 class="modal-title">{{title}}</h5>
-			<button type="button" class="close" (click)="onClose()">
+			<button type="button" class="close" (click)="onHide()">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
@@ -23,9 +24,9 @@ import {NgForm} from '@angular/forms';
 			<form #f="ngForm">
 				<ng-container #container libNgForm></ng-container>
 				<button type="submit" class="btn btn-success mr-2" *ngIf="loading"
-						[progress]="cri.reqObservable"
+						[progress]="promise"
 						[disabled]="f.invalid"
-						(click)="onSubmit()">
+						(click)="onSave()">
 					Save
 				</button>
 				<button type="submit" class="btn btn-success" (click)="onClose()">
@@ -40,6 +41,7 @@ import {NgForm} from '@angular/forms';
 export class ModalTemplateComponent implements OnInit, OnDestroy {
 
 	@ViewChild('f', {static: true}) form: NgForm;
+	public onSubmit: Subject<boolean>;
 	title: string;
 	type: any;
 	data: any;
@@ -48,9 +50,11 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 	componentRef: ComponentRef<any>;
 
 	loading = false;
+	promise: Subscription;
 
 	@Input() set componentType(c: any) {
 		this.component = c;
+		this.onSubmit = new Subject();
 		this.renderContent();
 	}
 
@@ -59,7 +63,8 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 		static: true
 	}) container: ViewContainerRef;
 
-	constructor(private modalRef: BsModalRef) {	}
+	constructor(private modalRef: BsModalRef) {
+	}
 
 
 	renderContent() {
@@ -83,12 +88,31 @@ export class ModalTemplateComponent implements OnInit, OnDestroy {
 	}
 
 
-	onSubmit() {
-		this.componentRef.instance.onSave(this.form.value);
+	onSave() {
 
+		const resolveModalState = () => {
+			this.onSubmit.next(true);
+			this.modalRef.hide();
+		};
+
+		this.promise = this.cri.onSave(this.form.value);
+		const isSubscription: boolean = this.promise instanceof Subscription;
+		if (isSubscription) {
+			const promise = new Promise((resolve) => {
+				(this.promise as Subscription).add(resolve);
+			});
+			if (promise.finally) {
+				promise.finally(resolveModalState);
+			}
+		}
 	}
 
 	onClose() {
+		this.onSubmit.next(false);
+		this.modalRef.hide();
+	}
+
+	onHide() {
 		this.modalRef.hide();
 	}
 
