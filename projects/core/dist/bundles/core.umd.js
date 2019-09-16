@@ -44,6 +44,29 @@
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
     }
 
+    function __read(o, n) {
+        var m = typeof Symbol === "function" && o[Symbol.iterator];
+        if (!m) return o;
+        var i = m.call(o), r, ar = [], e;
+        try {
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+        }
+        catch (error) { e = { error: error }; }
+        finally {
+            try {
+                if (r && !r.done && (m = i["return"])) m.call(i);
+            }
+            finally { if (e) throw e.error; }
+        }
+        return ar;
+    }
+
+    function __spread() {
+        for (var ar = [], i = 0; i < arguments.length; i++)
+            ar = ar.concat(__read(arguments[i]));
+        return ar;
+    }
+
     /**
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
@@ -391,11 +414,37 @@
      * @param {?} appLoadService
      * @return {?}
      */
-    function init_app(appLoadService) {
+    function initializeApp(appLoadService) {
         return (/**
          * @return {?}
          */
         function () { return appLoadService.initializeApp(); });
+    }
+    /**
+     * @param {?} obj
+     * @return {?}
+     */
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+    /**
+     * @param {?} path
+     * @param {?} route
+     * @return {?}
+     */
+    function routePathExtract(path, route) {
+        if (!isEmpty(route.snapshot.params)) {
+            /** @type {?} */
+            var key = path.split('/')[0].substr(1);
+            return {
+                key: key,
+                label: route.snapshot.params[key]
+            };
+        }
+        return {
+            key: null,
+            label: path
+        };
     }
 
     /**
@@ -793,6 +842,165 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
+    var BreadcrumbsService = /** @class */ (function () {
+        function BreadcrumbsService(router$1, activatedRoute) {
+            var _this = this;
+            this.router = router$1;
+            this.activatedRoute = activatedRoute;
+            this.breadcrumbs$ = new rxjs.BehaviorSubject([]);
+            router$1.events.pipe(operators.filter((/**
+             * @param {?} event
+             * @return {?}
+             */
+            function (event) { return event instanceof router.NavigationEnd; })), operators.distinctUntilChanged(), operators.map((/**
+             * @param {?} event
+             * @return {?}
+             */
+            function (event) {
+                console.log('start');
+                _this.breadcrumbs$.next([]);
+                _this._resolveCrumbs(activatedRoute.root);
+            }))).subscribe((/**
+             * @param {?} res
+             * @return {?}
+             */
+            function (res) {
+            }));
+        }
+        /**
+         * @private
+         * @param {?} route
+         * @param {?=} url
+         * @return {?}
+         */
+        BreadcrumbsService.prototype._resolveCrumbs = /**
+         * @private
+         * @param {?} route
+         * @param {?=} url
+         * @return {?}
+         */
+        function (route, url) {
+            if (url === void 0) { url = ''; }
+            console.log('_resolveCrumbs');
+            /** @type {?} */
+            var label = route.routeConfig ? route.routeConfig.data['title'] : 'Home';
+            /** @type {?} */
+            var path = route.routeConfig ? route.routeConfig.path : '';
+            /** @type {?} */
+            var pathExtract = routePathExtract(path, route);
+            /** @type {?} */
+            var nextUrl = "" + url + path + "/";
+            /** @type {?} */
+            var breadcrumb = {
+                key: pathExtract.key,
+                label: pathExtract.label,
+                url: nextUrl
+            };
+            /** @type {?} */
+            var newBreadcrumbs = __spread(this.crumbsValue, [breadcrumb]);
+            this.breadcrumbs$.next(newBreadcrumbs);
+            console.log(newBreadcrumbs);
+            if (route.firstChild) {
+                return this._resolveCrumbs(route.firstChild, nextUrl);
+            }
+        };
+        Object.defineProperty(BreadcrumbsService.prototype, "crumbsValue", {
+            get: /**
+             * @private
+             * @return {?}
+             */
+            function () {
+                return this.breadcrumbs$.value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(BreadcrumbsService.prototype, "crumbsAsObservable", {
+            get: /**
+             * @return {?}
+             */
+            function () {
+                return this.breadcrumbs$.asObservable();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * @param {?} key
+         * @param {?} label
+         * @return {?}
+         */
+        BreadcrumbsService.prototype.store = /**
+         * @param {?} key
+         * @param {?} label
+         * @return {?}
+         */
+        function (key, label) {
+            console.log(this.crumbsValue.filter((/**
+             * @param {?} x
+             * @return {?}
+             */
+            function (x) { return x.key === key; })));
+            /** @type {?} */
+            var found = this.crumbsValue.filter((/**
+             * @param {?} x
+             * @return {?}
+             */
+            function (x) { return x.key === key; }))[0];
+            if (found) {
+                /** @type {?} */
+                var index = this.crumbsValue.indexOf(found);
+                this.crumbsValue[index]['label'] = label;
+            }
+        };
+        BreadcrumbsService.decorators = [
+            { type: core.Injectable, args: [{
+                        providedIn: 'root'
+                    },] }
+        ];
+        /** @nocollapse */
+        BreadcrumbsService.ctorParameters = function () { return [
+            { type: router.Router },
+            { type: router.ActivatedRoute }
+        ]; };
+        /** @nocollapse */ BreadcrumbsService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function BreadcrumbsService_Factory() { return new BreadcrumbsService(core.ɵɵinject(router.Router), core.ɵɵinject(router.ActivatedRoute)); }, token: BreadcrumbsService, providedIn: "root" });
+        return BreadcrumbsService;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var BreadcrumbsComponent = /** @class */ (function () {
+        function BreadcrumbsComponent(_breadcrumbs) {
+            this._breadcrumbs = _breadcrumbs;
+            // this.breadcrumbs$ = _breadcrumbs.breadcrumbs$.asObservable();
+        }
+        /**
+         * @return {?}
+         */
+        BreadcrumbsComponent.prototype.ngOnInit = /**
+         * @return {?}
+         */
+        function () {
+        };
+        BreadcrumbsComponent.decorators = [
+            { type: core.Component, args: [{
+                        selector: 'breadcrumbs',
+                        template: "<ol class=\"breadcrumb\">\n\t<ng-container *ngFor=\"let breadcrumb of _breadcrumbs.breadcrumbs$ | async; last as isLast;\">\n\t\t<li *ngIf=\"breadcrumb.label!==''\"\n\t\t\tclass=\"breadcrumb-item\"\n\t\t\t[ngClass]=\"{'active': isLast}\">\n\t\t\t<a *ngIf=\"!isLast; else lastRoute\"\n\t\t\t   [routerLink]=\"[breadcrumb.url]\"\n\t\t\t   routerLinkActive=\"active\">\n\t\t\t\t{{ breadcrumb.label }}\n\t\t\t</a>\n\t\t\t<ng-template #lastRoute>{{ breadcrumb.label }}</ng-template>\n\t\t</li>\n\t</ng-container>\n</ol>\n"
+                    }] }
+        ];
+        /** @nocollapse */
+        BreadcrumbsComponent.ctorParameters = function () { return [
+            { type: BreadcrumbsService }
+        ]; };
+        return BreadcrumbsComponent;
+    }());
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
     var CoreModule = /** @class */ (function () {
         function CoreModule(defaultLang, supportLang, injector) {
             var _this = this;
@@ -825,7 +1033,8 @@
                     UiService,
                     CoreTranslateService,
                     AppLoadService,
-                    { provide: core.APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
+                    BreadcrumbsService,
+                    { provide: core.APP_INITIALIZER, useFactory: initializeApp, deps: [AppLoadService], multi: true },
                     { provide: 'config', useValue: config },
                     {
                         provide: http.HTTP_INTERCEPTORS,
@@ -853,12 +1062,14 @@
         };
         CoreModule.decorators = [
             { type: core.NgModule, args: [{
-                        declarations: [],
+                        declarations: [BreadcrumbsComponent],
                         imports: [
                             http.HttpClientModule,
-                            core$1.TranslateModule.forRoot(translateModuleOptions)
+                            router.RouterModule,
+                            core$1.TranslateModule.forRoot(translateModuleOptions),
+                            common.CommonModule
                         ],
-                        exports: [core$1.TranslateModule]
+                        exports: [core$1.TranslateModule, BreadcrumbsComponent]
                     },] }
         ];
         /** @nocollapse */
@@ -1253,15 +1464,6 @@
         function DialogService(config, _translateService) {
             this.config = config;
             this._translateService = _translateService;
-            this._translateService.loaded.subscribe((/**
-             * @param {?} res
-             * @return {?}
-             */
-            function (res) {
-                if (res) {
-                    console.log('asasas');
-                }
-            }));
             this.reConfig();
         }
         /**
@@ -1772,9 +1974,9 @@
                             ngxToastNotifications.ToastNotificationsModule.forRoot({ component: ToastTemplateComponent }),
                             ngBootstrap.NgbDatepickerModule,
                             ngxBootstrap.ModalModule.forRoot(),
-                            common.CommonModule,
                             forms.FormsModule,
-                            forms.ReactiveFormsModule
+                            forms.ReactiveFormsModule,
+                            common.CommonModule,
                         ],
                         entryComponents: [
                             ModalTemplateComponent,
@@ -2021,6 +2223,8 @@
     exports.AuthModule = AuthModule;
     exports.AuthenticationService = AuthenticationService;
     exports.Base = Base;
+    exports.BreadcrumbsComponent = BreadcrumbsComponent;
+    exports.BreadcrumbsService = BreadcrumbsService;
     exports.CoreModule = CoreModule;
     exports.CoreTranslateService = CoreTranslateService;
     exports.DEFAULT_LANG = DEFAULT_LANG;
@@ -2048,8 +2252,10 @@
     exports.TokenError = TokenError;
     exports.UIModule = UIModule;
     exports.UiService = UiService;
-    exports.init_app = init_app;
+    exports.initializeApp = initializeApp;
+    exports.isEmpty = isEmpty;
     exports.isString = isString;
+    exports.routePathExtract = routePathExtract;
     exports.translateModuleOptions = translateModuleOptions;
     exports.ɵa = AppLoadService;
     exports.ɵf = CoreHttpInterceptor;

@@ -10,6 +10,13 @@ import {AuthModule, CoreModule, UIModule} from 'core';
 import {ModalTestComponent} from './modal-test/modal-test.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ModalTest2Component} from './modal-test2/modal-test2.component';
+import {HomeComponent} from './home/home.component';
+import {AppWrapperComponent} from './app-wrapper/app-wrapper.component';
+import {ProductListComponent} from './product-list/product-list.component';
+import {UsersComponent} from './users/users.component';
+import {UserCardComponent} from './user-card/user-card.component';
+
+// import {AuthModule, CoreModule, UIModule} from '../../projects/core/src/lib/core.module';
 
 
 @NgModule({
@@ -17,18 +24,24 @@ import {ModalTest2Component} from './modal-test2/modal-test2.component';
 		AppComponent,
 		LoginComponent,
 		DashboardComponent,
+		AppWrapperComponent,
+		UserCardComponent,
+		ProductListComponent,
+		UsersComponent,
+		HomeComponent,
 		ModalTestComponent,
 		ModalTest2Component
 	],
 	imports: [
 		BrowserModule,
+		RoutingModule,
 		AuthModule.forRoot(AUTH_CONFIG),
 		CoreModule.forRoot(CORE_CONFIG),
 		UIModule.forRoot(UI_CONFIG),
 		HttpClientModule,
-		RoutingModule,
 		FormsModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		CoreModule
 	],
 	entryComponents: [
 		ModalTestComponent,

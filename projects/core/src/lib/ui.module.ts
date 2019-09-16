@@ -29,9 +29,9 @@ import {ProgressButtonDirective} from './directives/progress-button.directive';
 		ToastNotificationsModule.forRoot({component: ToastTemplateComponent}),
 		NgbDatepickerModule,
 		ModalModule.forRoot(),
-		CommonModule,
 		FormsModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		CommonModule,
 	],
 	entryComponents: [
 		ModalTemplateComponent,

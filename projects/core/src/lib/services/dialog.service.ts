@@ -16,11 +16,6 @@ export class DialogService {
 
 	constructor(@Inject('uiConfig') private config: UiModuleConfig,
 				private _translateService: CoreTranslateService) {
-		this._translateService.loaded.subscribe(res => {
-			if (res) {
-				console.log('asasas');
-			}
-		});
 		this.reConfig();
 
 	}

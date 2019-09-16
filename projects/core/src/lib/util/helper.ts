@@ -17,6 +17,31 @@ export const translateModuleOptions: TranslateModuleConfig = {
 	}
 };
 
-export function init_app(appLoadService: AppLoadService) {
+export function initializeApp(appLoadService: AppLoadService) {
 	return () => appLoadService.initializeApp();
+}
+
+
+export function isEmpty(obj) {
+	return Object.keys(obj).length === 0;
+}
+
+
+export function routePathExtract(path: string, route: any): IRoutePath  {
+	if (!isEmpty(route.snapshot.params)) {
+		const key = path.split('/')[0].substr(1);
+		return {
+			key,
+			label: route.snapshot.params[key]
+		};
+	}
+	return {
+		key: null,
+		label: path
+	};
+}
+
+export interface IRoutePath {
+	key: string;
+	label: string;
 }

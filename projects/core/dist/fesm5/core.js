@@ -1,12 +1,12 @@
-import { InjectionToken, Injector, Injectable, Inject, ɵɵdefineInjectable, ɵɵinject, INJECTOR, NgModule, APP_INITIALIZER, Component, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef, forwardRef, Directive, ElementRef, HostListener } from '@angular/core';
-import { __extends, __decorate, __metadata } from 'tslib';
+import { InjectionToken, Injector, Injectable, Inject, ɵɵdefineInjectable, ɵɵinject, INJECTOR, Component, NgModule, APP_INITIALIZER, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef, forwardRef, Directive, ElementRef, HostListener } from '@angular/core';
+import { __extends, __decorate, __metadata, __spread } from 'tslib';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateLoader, TranslateService, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DOCUMENT, CommonModule } from '@angular/common';
 import { BehaviorSubject, ReplaySubject, Subject, Subscription } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { Router, ActivatedRoute, NavigationEnd, RouterModule } from '@angular/router';
+import { map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { NgxCoolDialogsService, NgxCoolDialogsModule } from 'ngx-cool-dialogs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Toaster, ToastNotificationsModule } from 'ngx-toast-notifications';
@@ -363,11 +363,37 @@ var translateModuleOptions = {
  * @param {?} appLoadService
  * @return {?}
  */
-function init_app(appLoadService) {
+function initializeApp(appLoadService) {
     return (/**
      * @return {?}
      */
     function () { return appLoadService.initializeApp(); });
+}
+/**
+ * @param {?} obj
+ * @return {?}
+ */
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+/**
+ * @param {?} path
+ * @param {?} route
+ * @return {?}
+ */
+function routePathExtract(path, route) {
+    if (!isEmpty(route.snapshot.params)) {
+        /** @type {?} */
+        var key = path.split('/')[0].substr(1);
+        return {
+            key: key,
+            label: route.snapshot.params[key]
+        };
+    }
+    return {
+        key: null,
+        label: path
+    };
 }
 
 /**
@@ -765,6 +791,165 @@ var CoreHttpInterceptor = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+var BreadcrumbsService = /** @class */ (function () {
+    function BreadcrumbsService(router, activatedRoute) {
+        var _this = this;
+        this.router = router;
+        this.activatedRoute = activatedRoute;
+        this.breadcrumbs$ = new BehaviorSubject([]);
+        router.events.pipe(filter((/**
+         * @param {?} event
+         * @return {?}
+         */
+        function (event) { return event instanceof NavigationEnd; })), distinctUntilChanged(), map((/**
+         * @param {?} event
+         * @return {?}
+         */
+        function (event) {
+            console.log('start');
+            _this.breadcrumbs$.next([]);
+            _this._resolveCrumbs(activatedRoute.root);
+        }))).subscribe((/**
+         * @param {?} res
+         * @return {?}
+         */
+        function (res) {
+        }));
+    }
+    /**
+     * @private
+     * @param {?} route
+     * @param {?=} url
+     * @return {?}
+     */
+    BreadcrumbsService.prototype._resolveCrumbs = /**
+     * @private
+     * @param {?} route
+     * @param {?=} url
+     * @return {?}
+     */
+    function (route, url) {
+        if (url === void 0) { url = ''; }
+        console.log('_resolveCrumbs');
+        /** @type {?} */
+        var label = route.routeConfig ? route.routeConfig.data['title'] : 'Home';
+        /** @type {?} */
+        var path = route.routeConfig ? route.routeConfig.path : '';
+        /** @type {?} */
+        var pathExtract = routePathExtract(path, route);
+        /** @type {?} */
+        var nextUrl = "" + url + path + "/";
+        /** @type {?} */
+        var breadcrumb = {
+            key: pathExtract.key,
+            label: pathExtract.label,
+            url: nextUrl
+        };
+        /** @type {?} */
+        var newBreadcrumbs = __spread(this.crumbsValue, [breadcrumb]);
+        this.breadcrumbs$.next(newBreadcrumbs);
+        console.log(newBreadcrumbs);
+        if (route.firstChild) {
+            return this._resolveCrumbs(route.firstChild, nextUrl);
+        }
+    };
+    Object.defineProperty(BreadcrumbsService.prototype, "crumbsValue", {
+        get: /**
+         * @private
+         * @return {?}
+         */
+        function () {
+            return this.breadcrumbs$.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BreadcrumbsService.prototype, "crumbsAsObservable", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.breadcrumbs$.asObservable();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} key
+     * @param {?} label
+     * @return {?}
+     */
+    BreadcrumbsService.prototype.store = /**
+     * @param {?} key
+     * @param {?} label
+     * @return {?}
+     */
+    function (key, label) {
+        console.log(this.crumbsValue.filter((/**
+         * @param {?} x
+         * @return {?}
+         */
+        function (x) { return x.key === key; })));
+        /** @type {?} */
+        var found = this.crumbsValue.filter((/**
+         * @param {?} x
+         * @return {?}
+         */
+        function (x) { return x.key === key; }))[0];
+        if (found) {
+            /** @type {?} */
+            var index = this.crumbsValue.indexOf(found);
+            this.crumbsValue[index]['label'] = label;
+        }
+    };
+    BreadcrumbsService.decorators = [
+        { type: Injectable, args: [{
+                    providedIn: 'root'
+                },] }
+    ];
+    /** @nocollapse */
+    BreadcrumbsService.ctorParameters = function () { return [
+        { type: Router },
+        { type: ActivatedRoute }
+    ]; };
+    /** @nocollapse */ BreadcrumbsService.ngInjectableDef = ɵɵdefineInjectable({ factory: function BreadcrumbsService_Factory() { return new BreadcrumbsService(ɵɵinject(Router), ɵɵinject(ActivatedRoute)); }, token: BreadcrumbsService, providedIn: "root" });
+    return BreadcrumbsService;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+var BreadcrumbsComponent = /** @class */ (function () {
+    function BreadcrumbsComponent(_breadcrumbs) {
+        this._breadcrumbs = _breadcrumbs;
+        // this.breadcrumbs$ = _breadcrumbs.breadcrumbs$.asObservable();
+    }
+    /**
+     * @return {?}
+     */
+    BreadcrumbsComponent.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+    };
+    BreadcrumbsComponent.decorators = [
+        { type: Component, args: [{
+                    selector: 'breadcrumbs',
+                    template: "<ol class=\"breadcrumb\">\n\t<ng-container *ngFor=\"let breadcrumb of _breadcrumbs.breadcrumbs$ | async; last as isLast;\">\n\t\t<li *ngIf=\"breadcrumb.label!==''\"\n\t\t\tclass=\"breadcrumb-item\"\n\t\t\t[ngClass]=\"{'active': isLast}\">\n\t\t\t<a *ngIf=\"!isLast; else lastRoute\"\n\t\t\t   [routerLink]=\"[breadcrumb.url]\"\n\t\t\t   routerLinkActive=\"active\">\n\t\t\t\t{{ breadcrumb.label }}\n\t\t\t</a>\n\t\t\t<ng-template #lastRoute>{{ breadcrumb.label }}</ng-template>\n\t\t</li>\n\t</ng-container>\n</ol>\n"
+                }] }
+    ];
+    /** @nocollapse */
+    BreadcrumbsComponent.ctorParameters = function () { return [
+        { type: BreadcrumbsService }
+    ]; };
+    return BreadcrumbsComponent;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 var CoreModule = /** @class */ (function () {
     function CoreModule(defaultLang, supportLang, injector) {
         var _this = this;
@@ -797,7 +982,8 @@ var CoreModule = /** @class */ (function () {
                 UiService,
                 CoreTranslateService,
                 AppLoadService,
-                { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
+                BreadcrumbsService,
+                { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [AppLoadService], multi: true },
                 { provide: 'config', useValue: config },
                 {
                     provide: HTTP_INTERCEPTORS,
@@ -825,12 +1011,14 @@ var CoreModule = /** @class */ (function () {
     };
     CoreModule.decorators = [
         { type: NgModule, args: [{
-                    declarations: [],
+                    declarations: [BreadcrumbsComponent],
                     imports: [
                         HttpClientModule,
-                        TranslateModule.forRoot(translateModuleOptions)
+                        RouterModule,
+                        TranslateModule.forRoot(translateModuleOptions),
+                        CommonModule
                     ],
-                    exports: [TranslateModule]
+                    exports: [TranslateModule, BreadcrumbsComponent]
                 },] }
     ];
     /** @nocollapse */
@@ -1225,15 +1413,6 @@ var DialogService = /** @class */ (function () {
     function DialogService(config, _translateService) {
         this.config = config;
         this._translateService = _translateService;
-        this._translateService.loaded.subscribe((/**
-         * @param {?} res
-         * @return {?}
-         */
-        function (res) {
-            if (res) {
-                console.log('asasas');
-            }
-        }));
         this.reConfig();
     }
     /**
@@ -1744,9 +1923,9 @@ var UIModule = /** @class */ (function () {
                         ToastNotificationsModule.forRoot({ component: ToastTemplateComponent }),
                         NgbDatepickerModule,
                         ModalModule.forRoot(),
-                        CommonModule,
                         FormsModule,
-                        ReactiveFormsModule
+                        ReactiveFormsModule,
+                        CommonModule,
                     ],
                     entryComponents: [
                         ModalTemplateComponent,
@@ -1989,5 +2168,5 @@ var LocalStorage = /** @class */ (function () {
     return LocalStorage;
 }());
 
-export { AUTH_CONFIG_DEFAULTS, AuthModule, AuthenticationService, Base, CoreModule, CoreTranslateService, DEFAULT_LANG, DIALOG_CONFIG_DEFAULTS, DialogService, GlobalInject, HttpLoaderFactory, HttpProvider, InjectToken, LOCAL_STORAGE_CONFIG_DEFAULTS, LocalStorage, LoggedInAuth, LoggedOutAuth, MODULE_CONFIG_DEFAULTS, Modal, ModalService, ModalTemplateComponent, QUERY_SERVICE_TOKEN, Query, QueryService, SUPPORT_LANG, ToastService, ToastTemplateComponent, Token, TokenError, UIModule, UiService, init_app, isString, translateModuleOptions, AppLoadService as ɵa, CoreHttpInterceptor as ɵf, TokenService as ɵg, JwtInterceptor as ɵh, formDirectiveProvider as ɵi, NgFormDirective as ɵj, ProgressButtonDirective as ɵk };
+export { AUTH_CONFIG_DEFAULTS, AuthModule, AuthenticationService, Base, BreadcrumbsComponent, BreadcrumbsService, CoreModule, CoreTranslateService, DEFAULT_LANG, DIALOG_CONFIG_DEFAULTS, DialogService, GlobalInject, HttpLoaderFactory, HttpProvider, InjectToken, LOCAL_STORAGE_CONFIG_DEFAULTS, LocalStorage, LoggedInAuth, LoggedOutAuth, MODULE_CONFIG_DEFAULTS, Modal, ModalService, ModalTemplateComponent, QUERY_SERVICE_TOKEN, Query, QueryService, SUPPORT_LANG, ToastService, ToastTemplateComponent, Token, TokenError, UIModule, UiService, initializeApp, isEmpty, isString, routePathExtract, translateModuleOptions, AppLoadService as ɵa, CoreHttpInterceptor as ɵf, TokenService as ɵg, JwtInterceptor as ɵh, formDirectiveProvider as ɵi, NgFormDirective as ɵj, ProgressButtonDirective as ɵk };
 //# sourceMappingURL=core.js.map

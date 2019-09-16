@@ -6,20 +6,26 @@ import {CoreModuleConfig} from './interfaces/config.model';
 import {DEFAULT_LANG, QUERY_SERVICE_TOKEN, SUPPORT_LANG} from './tokens';
 import {InjectToken} from './decorators/inject.decorator';
 import {TranslateModule} from '@ngx-translate/core';
-import {init_app, translateModuleOptions} from './util/helper';
+import {initializeApp, translateModuleOptions} from './util/helper';
 import {UiService} from './services/ui.service';
 import {CoreTranslateService} from './services/core-translate.service';
 import {AppLoadService} from './services/app-load-service.service';
 import {CoreHttpInterceptor} from './interceptors/core=http.interceptor';
+import {BreadcrumbsService} from './services/breadcrumbs.service';
+import {BreadcrumbsComponent} from './components/breadcrumbs.component';
+import {RouterModule} from '@angular/router';
+import {CommonModule} from '@angular/common';
 
 
 @NgModule({
-	declarations: [],
+	declarations: [BreadcrumbsComponent],
 	imports: [
 		HttpClientModule,
-		TranslateModule.forRoot(translateModuleOptions)
+		RouterModule,
+		TranslateModule.forRoot(translateModuleOptions),
+		CommonModule
 	],
-	exports: [TranslateModule]
+	exports: [TranslateModule, BreadcrumbsComponent]
 })
 export class CoreModule {
 
@@ -57,7 +63,8 @@ export class CoreModule {
 				UiService,
 				CoreTranslateService,
 				AppLoadService,
-				{provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true},
+				BreadcrumbsService,
+				{provide: APP_INITIALIZER, useFactory: initializeApp, deps: [AppLoadService], multi: true},
 				{provide: 'config', useValue: config},
 				{
 					provide: HTTP_INTERCEPTORS,
