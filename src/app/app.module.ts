@@ -4,7 +4,7 @@ import {RoutingModule} from './routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {AUTH_CONFIG, CORE_CONFIG, UI_CONFIG} from './module.config';
+import {AUTH_CONFIG, CORE_CONFIG, UI_CONFIG} from './core.config';
 import {HttpClientModule} from '@angular/common/http';
 import {AuthModule, CoreModule, UIModule} from 'core';
 import {ModalTestComponent} from './modal-test/modal-test.component';

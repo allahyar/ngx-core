@@ -427,6 +427,12 @@
     function isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }
+    // const split = path.split('/');
+    // split.forEach(crumb => {
+    // 	if (crumb.indexOf(':', 0) === 0) {
+    // 		console.log(crumb);
+    // 	}
+    // });
     /**
      * @param {?} path
      * @param {?} route
@@ -445,6 +451,13 @@
             key: null,
             label: path
         };
+    }
+    /**
+     * @param {?} crumb
+     * @return {?}
+     */
+    function crumbCleaner(crumb) {
+        return crumb.substr(1);
     }
 
     /**
@@ -843,28 +856,30 @@
      * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var BreadcrumbsService = /** @class */ (function () {
-        function BreadcrumbsService(router$1, activatedRoute) {
+        function BreadcrumbsService(router$1, activatedRoute, config) {
             var _this = this;
             this.router = router$1;
             this.activatedRoute = activatedRoute;
+            this.config = config;
             this.breadcrumbs$ = new rxjs.BehaviorSubject([]);
             router$1.events.pipe(operators.filter((/**
              * @param {?} event
              * @return {?}
              */
-            function (event) { return event instanceof router.NavigationEnd; })), operators.distinctUntilChanged(), operators.map((/**
-             * @param {?} event
+            function (event) { return event instanceof router.NavigationEnd; })), operators.distinctUntilChanged()).subscribe((/**
+             * @param {?} e
              * @return {?}
              */
-            function (event) {
-                console.log('start');
-                _this.breadcrumbs$.next([]);
+            function (e) {
+                /** @type {?} */
+                var prefix = _this.config.breadcrumb.prefix;
+                /** @type {?} */
+                var crumb = (prefix) ? [{ label: prefix.toString(), url: '', key: null }] : [];
+                _this.breadcrumbs$.next(crumb);
                 _this._resolveCrumbs(activatedRoute.root);
-            }))).subscribe((/**
-             * @param {?} res
-             * @return {?}
-             */
-            function (res) {
+                if (_this.config.breadcrumb.useTitle) {
+                    console.log(activatedRoute.root.firstChild);
+                }
             }));
         }
         /**
@@ -880,28 +895,42 @@
          * @return {?}
          */
         function (route, url) {
+            var _this = this;
             if (url === void 0) { url = ''; }
-            console.log('_resolveCrumbs');
-            /** @type {?} */
-            var label = route.routeConfig ? route.routeConfig.data['title'] : 'Home';
             /** @type {?} */
             var path = route.routeConfig ? route.routeConfig.path : '';
             /** @type {?} */
-            var pathExtract = routePathExtract(path, route);
+            var label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['title'] || '' : 'Home';
             /** @type {?} */
-            var nextUrl = "" + url + path + "/";
-            /** @type {?} */
-            var breadcrumb = {
-                key: pathExtract.key,
-                label: pathExtract.label,
-                url: nextUrl
-            };
-            /** @type {?} */
-            var newBreadcrumbs = __spread(this.crumbsValue, [breadcrumb]);
-            this.breadcrumbs$.next(newBreadcrumbs);
-            console.log(newBreadcrumbs);
+            var nextUrl;
+            if (path.indexOf(':') !== -1) {
+                /** @type {?} */
+                var sucked = path.split('/');
+                sucked.forEach((/**
+                 * @param {?} crumb
+                 * @return {?}
+                 */
+                function (crumb) {
+                    if (crumb.indexOf(':', 0) === 0) {
+                        /** @type {?} */
+                        var key = crumbCleaner(crumb);
+                        /** @type {?} */
+                        var newLabel = route.snapshot.params[key];
+                        nextUrl = "" + url + newLabel + "/";
+                        _this.push(newLabel, key, nextUrl);
+                    }
+                    else {
+                        nextUrl = "" + url + crumb + "/";
+                        _this.push(label, null, nextUrl);
+                    }
+                }));
+            }
+            else {
+                nextUrl = "" + url + path + "/";
+                this.push(label, null, nextUrl);
+            }
             if (route.firstChild) {
-                return this._resolveCrumbs(route.firstChild, nextUrl);
+                return this._resolveCrumbs(route.firstChild, url);
             }
         };
         Object.defineProperty(BreadcrumbsService.prototype, "crumbsValue", {
@@ -936,22 +965,45 @@
          * @return {?}
          */
         function (key, label) {
-            console.log(this.crumbsValue.filter((/**
-             * @param {?} x
+            var _this = this;
+            this.breadcrumbs$
+                .pipe(operators.map((/**
+             * @param {?} users
              * @return {?}
              */
-            function (x) { return x.key === key; })));
-            /** @type {?} */
-            var found = this.crumbsValue.filter((/**
-             * @param {?} x
+            function (users) { return users.find((/**
+             * @param {?} user
              * @return {?}
              */
-            function (x) { return x.key === key; }))[0];
-            if (found) {
+            function (user) { return user.key === key; })); })))
+                .subscribe((/**
+             * @param {?} res
+             * @return {?}
+             */
+            function (res) {
                 /** @type {?} */
-                var index = this.crumbsValue.indexOf(found);
-                this.crumbsValue[index]['label'] = label;
-            }
+                var index = _this.crumbsValue.indexOf(res);
+                _this.crumbsValue[index]['label'] = label;
+            }));
+        };
+        /**
+         * @param {?} label
+         * @param {?} key
+         * @param {?} url
+         * @return {?}
+         */
+        BreadcrumbsService.prototype.push = /**
+         * @param {?} label
+         * @param {?} key
+         * @param {?} url
+         * @return {?}
+         */
+        function (label, key, url) {
+            /** @type {?} */
+            var breadcrumb = { key: key, label: label, url: url };
+            /** @type {?} */
+            var newBreadcrumbs = __spread(this.crumbsValue, [breadcrumb]);
+            this.breadcrumbs$.next(newBreadcrumbs);
         };
         BreadcrumbsService.decorators = [
             { type: core.Injectable, args: [{
@@ -961,9 +1013,10 @@
         /** @nocollapse */
         BreadcrumbsService.ctorParameters = function () { return [
             { type: router.Router },
-            { type: router.ActivatedRoute }
+            { type: router.ActivatedRoute },
+            { type: undefined, decorators: [{ type: core.Inject, args: ['uiConfig',] }] }
         ]; };
-        /** @nocollapse */ BreadcrumbsService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function BreadcrumbsService_Factory() { return new BreadcrumbsService(core.ɵɵinject(router.Router), core.ɵɵinject(router.ActivatedRoute)); }, token: BreadcrumbsService, providedIn: "root" });
+        /** @nocollapse */ BreadcrumbsService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function BreadcrumbsService_Factory() { return new BreadcrumbsService(core.ɵɵinject(router.Router), core.ɵɵinject(router.ActivatedRoute), core.ɵɵinject("uiConfig")); }, token: BreadcrumbsService, providedIn: "root" });
         return BreadcrumbsService;
     }());
 
@@ -2252,18 +2305,19 @@
     exports.TokenError = TokenError;
     exports.UIModule = UIModule;
     exports.UiService = UiService;
+    exports.crumbCleaner = crumbCleaner;
     exports.initializeApp = initializeApp;
     exports.isEmpty = isEmpty;
     exports.isString = isString;
     exports.routePathExtract = routePathExtract;
     exports.translateModuleOptions = translateModuleOptions;
     exports.ɵa = AppLoadService;
-    exports.ɵf = CoreHttpInterceptor;
-    exports.ɵg = TokenService;
-    exports.ɵh = JwtInterceptor;
-    exports.ɵi = formDirectiveProvider;
-    exports.ɵj = NgFormDirective;
-    exports.ɵk = ProgressButtonDirective;
+    exports.ɵb = CoreHttpInterceptor;
+    exports.ɵc = TokenService;
+    exports.ɵd = JwtInterceptor;
+    exports.ɵe = formDirectiveProvider;
+    exports.ɵf = NgFormDirective;
+    exports.ɵg = ProgressButtonDirective;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

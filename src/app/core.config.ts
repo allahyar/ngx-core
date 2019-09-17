@@ -1,4 +1,4 @@
-import {AuthModuleConfig, CoreModuleConfig, UiModuleConfig} from 'core/lib/interfaces/config.model';
+import {AuthModuleConfig, CoreModuleConfig, UiModuleConfig} from 'core';
 
 export const CORE_CONFIG: CoreModuleConfig = {
 	api: {
@@ -21,7 +21,7 @@ export const AUTH_CONFIG: AuthModuleConfig = {
 	tokenVerifyEndPoint: 'auth/verify_token',
 	headerPrefix: 'Bearer',
 	loginTokenName: 'satellizer_token',
-	useTokenVerify: true,
+	useTokenVerify: false,
 	guards: {
 		loggedInGuard: {
 			redirectUrl: '/login'
@@ -34,6 +34,10 @@ export const AUTH_CONFIG: AuthModuleConfig = {
 
 
 export const UI_CONFIG: UiModuleConfig = {
+	breadcrumb: {
+		prefix: false,
+		useTitle: true
+	},
 	dialog: {
 		theme: 'default', // available themes: 'default' | 'material' | 'dark'
 		defaultText: 'HOME',

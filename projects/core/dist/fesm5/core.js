@@ -376,6 +376,12 @@ function initializeApp(appLoadService) {
 function isEmpty(obj) {
     return Object.keys(obj).length === 0;
 }
+// const split = path.split('/');
+// split.forEach(crumb => {
+// 	if (crumb.indexOf(':', 0) === 0) {
+// 		console.log(crumb);
+// 	}
+// });
 /**
  * @param {?} path
  * @param {?} route
@@ -394,6 +400,13 @@ function routePathExtract(path, route) {
         key: null,
         label: path
     };
+}
+/**
+ * @param {?} crumb
+ * @return {?}
+ */
+function crumbCleaner(crumb) {
+    return crumb.substr(1);
 }
 
 /**
@@ -792,28 +805,30 @@ var CoreHttpInterceptor = /** @class */ (function () {
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var BreadcrumbsService = /** @class */ (function () {
-    function BreadcrumbsService(router, activatedRoute) {
+    function BreadcrumbsService(router, activatedRoute, config) {
         var _this = this;
         this.router = router;
         this.activatedRoute = activatedRoute;
+        this.config = config;
         this.breadcrumbs$ = new BehaviorSubject([]);
         router.events.pipe(filter((/**
          * @param {?} event
          * @return {?}
          */
-        function (event) { return event instanceof NavigationEnd; })), distinctUntilChanged(), map((/**
-         * @param {?} event
+        function (event) { return event instanceof NavigationEnd; })), distinctUntilChanged()).subscribe((/**
+         * @param {?} e
          * @return {?}
          */
-        function (event) {
-            console.log('start');
-            _this.breadcrumbs$.next([]);
+        function (e) {
+            /** @type {?} */
+            var prefix = _this.config.breadcrumb.prefix;
+            /** @type {?} */
+            var crumb = (prefix) ? [{ label: prefix.toString(), url: '', key: null }] : [];
+            _this.breadcrumbs$.next(crumb);
             _this._resolveCrumbs(activatedRoute.root);
-        }))).subscribe((/**
-         * @param {?} res
-         * @return {?}
-         */
-        function (res) {
+            if (_this.config.breadcrumb.useTitle) {
+                console.log(activatedRoute.root.firstChild);
+            }
         }));
     }
     /**
@@ -829,28 +844,42 @@ var BreadcrumbsService = /** @class */ (function () {
      * @return {?}
      */
     function (route, url) {
+        var _this = this;
         if (url === void 0) { url = ''; }
-        console.log('_resolveCrumbs');
-        /** @type {?} */
-        var label = route.routeConfig ? route.routeConfig.data['title'] : 'Home';
         /** @type {?} */
         var path = route.routeConfig ? route.routeConfig.path : '';
         /** @type {?} */
-        var pathExtract = routePathExtract(path, route);
+        var label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['title'] || '' : 'Home';
         /** @type {?} */
-        var nextUrl = "" + url + path + "/";
-        /** @type {?} */
-        var breadcrumb = {
-            key: pathExtract.key,
-            label: pathExtract.label,
-            url: nextUrl
-        };
-        /** @type {?} */
-        var newBreadcrumbs = __spread(this.crumbsValue, [breadcrumb]);
-        this.breadcrumbs$.next(newBreadcrumbs);
-        console.log(newBreadcrumbs);
+        var nextUrl;
+        if (path.indexOf(':') !== -1) {
+            /** @type {?} */
+            var sucked = path.split('/');
+            sucked.forEach((/**
+             * @param {?} crumb
+             * @return {?}
+             */
+            function (crumb) {
+                if (crumb.indexOf(':', 0) === 0) {
+                    /** @type {?} */
+                    var key = crumbCleaner(crumb);
+                    /** @type {?} */
+                    var newLabel = route.snapshot.params[key];
+                    nextUrl = "" + url + newLabel + "/";
+                    _this.push(newLabel, key, nextUrl);
+                }
+                else {
+                    nextUrl = "" + url + crumb + "/";
+                    _this.push(label, null, nextUrl);
+                }
+            }));
+        }
+        else {
+            nextUrl = "" + url + path + "/";
+            this.push(label, null, nextUrl);
+        }
         if (route.firstChild) {
-            return this._resolveCrumbs(route.firstChild, nextUrl);
+            return this._resolveCrumbs(route.firstChild, url);
         }
     };
     Object.defineProperty(BreadcrumbsService.prototype, "crumbsValue", {
@@ -885,22 +914,45 @@ var BreadcrumbsService = /** @class */ (function () {
      * @return {?}
      */
     function (key, label) {
-        console.log(this.crumbsValue.filter((/**
-         * @param {?} x
+        var _this = this;
+        this.breadcrumbs$
+            .pipe(map((/**
+         * @param {?} users
          * @return {?}
          */
-        function (x) { return x.key === key; })));
-        /** @type {?} */
-        var found = this.crumbsValue.filter((/**
-         * @param {?} x
+        function (users) { return users.find((/**
+         * @param {?} user
          * @return {?}
          */
-        function (x) { return x.key === key; }))[0];
-        if (found) {
+        function (user) { return user.key === key; })); })))
+            .subscribe((/**
+         * @param {?} res
+         * @return {?}
+         */
+        function (res) {
             /** @type {?} */
-            var index = this.crumbsValue.indexOf(found);
-            this.crumbsValue[index]['label'] = label;
-        }
+            var index = _this.crumbsValue.indexOf(res);
+            _this.crumbsValue[index]['label'] = label;
+        }));
+    };
+    /**
+     * @param {?} label
+     * @param {?} key
+     * @param {?} url
+     * @return {?}
+     */
+    BreadcrumbsService.prototype.push = /**
+     * @param {?} label
+     * @param {?} key
+     * @param {?} url
+     * @return {?}
+     */
+    function (label, key, url) {
+        /** @type {?} */
+        var breadcrumb = { key: key, label: label, url: url };
+        /** @type {?} */
+        var newBreadcrumbs = __spread(this.crumbsValue, [breadcrumb]);
+        this.breadcrumbs$.next(newBreadcrumbs);
     };
     BreadcrumbsService.decorators = [
         { type: Injectable, args: [{
@@ -910,9 +962,10 @@ var BreadcrumbsService = /** @class */ (function () {
     /** @nocollapse */
     BreadcrumbsService.ctorParameters = function () { return [
         { type: Router },
-        { type: ActivatedRoute }
+        { type: ActivatedRoute },
+        { type: undefined, decorators: [{ type: Inject, args: ['uiConfig',] }] }
     ]; };
-    /** @nocollapse */ BreadcrumbsService.ngInjectableDef = ɵɵdefineInjectable({ factory: function BreadcrumbsService_Factory() { return new BreadcrumbsService(ɵɵinject(Router), ɵɵinject(ActivatedRoute)); }, token: BreadcrumbsService, providedIn: "root" });
+    /** @nocollapse */ BreadcrumbsService.ngInjectableDef = ɵɵdefineInjectable({ factory: function BreadcrumbsService_Factory() { return new BreadcrumbsService(ɵɵinject(Router), ɵɵinject(ActivatedRoute), ɵɵinject("uiConfig")); }, token: BreadcrumbsService, providedIn: "root" });
     return BreadcrumbsService;
 }());
 
@@ -2168,5 +2221,5 @@ var LocalStorage = /** @class */ (function () {
     return LocalStorage;
 }());
 
-export { AUTH_CONFIG_DEFAULTS, AuthModule, AuthenticationService, Base, BreadcrumbsComponent, BreadcrumbsService, CoreModule, CoreTranslateService, DEFAULT_LANG, DIALOG_CONFIG_DEFAULTS, DialogService, GlobalInject, HttpLoaderFactory, HttpProvider, InjectToken, LOCAL_STORAGE_CONFIG_DEFAULTS, LocalStorage, LoggedInAuth, LoggedOutAuth, MODULE_CONFIG_DEFAULTS, Modal, ModalService, ModalTemplateComponent, QUERY_SERVICE_TOKEN, Query, QueryService, SUPPORT_LANG, ToastService, ToastTemplateComponent, Token, TokenError, UIModule, UiService, initializeApp, isEmpty, isString, routePathExtract, translateModuleOptions, AppLoadService as ɵa, CoreHttpInterceptor as ɵf, TokenService as ɵg, JwtInterceptor as ɵh, formDirectiveProvider as ɵi, NgFormDirective as ɵj, ProgressButtonDirective as ɵk };
+export { AUTH_CONFIG_DEFAULTS, AuthModule, AuthenticationService, Base, BreadcrumbsComponent, BreadcrumbsService, CoreModule, CoreTranslateService, DEFAULT_LANG, DIALOG_CONFIG_DEFAULTS, DialogService, GlobalInject, HttpLoaderFactory, HttpProvider, InjectToken, LOCAL_STORAGE_CONFIG_DEFAULTS, LocalStorage, LoggedInAuth, LoggedOutAuth, MODULE_CONFIG_DEFAULTS, Modal, ModalService, ModalTemplateComponent, QUERY_SERVICE_TOKEN, Query, QueryService, SUPPORT_LANG, ToastService, ToastTemplateComponent, Token, TokenError, UIModule, UiService, crumbCleaner, initializeApp, isEmpty, isString, routePathExtract, translateModuleOptions, AppLoadService as ɵa, CoreHttpInterceptor as ɵb, TokenService as ɵc, JwtInterceptor as ɵd, formDirectiveProvider as ɵe, NgFormDirective as ɵf, ProgressButtonDirective as ɵg };
 //# sourceMappingURL=core.js.map

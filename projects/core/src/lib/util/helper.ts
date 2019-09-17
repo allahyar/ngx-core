@@ -26,8 +26,13 @@ export function isEmpty(obj) {
 	return Object.keys(obj).length === 0;
 }
 
-
-export function routePathExtract(path: string, route: any): IRoutePath  {
+// const split = path.split('/');
+// split.forEach(crumb => {
+// 	if (crumb.indexOf(':', 0) === 0) {
+// 		console.log(crumb);
+// 	}
+// });
+export function routePathExtract(path: string, route: any): IRoutePath {
 	if (!isEmpty(route.snapshot.params)) {
 		const key = path.split('/')[0].substr(1);
 		return {
@@ -44,4 +49,8 @@ export function routePathExtract(path: string, route: any): IRoutePath  {
 export interface IRoutePath {
 	key: string;
 	label: string;
+}
+
+export function crumbCleaner(crumb: string): string {
+	return crumb.substr(1);
 }

@@ -8,12 +8,10 @@ import {BreadcrumbsService} from 'core';
 })
 export class UserCardComponent implements OnInit {
 
-	constructor(private _breadcrumbs: BreadcrumbsService) {
-	}
+	constructor(private _breadcrumbs: BreadcrumbsService) {	}
 
 	ngOnInit() {
 		this._breadcrumbs.store('id', 'ok');
-		// tod key ro peyda nemikone
 	}
 
 }

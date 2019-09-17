@@ -32,6 +32,10 @@ export interface AuthModuleConfig {
 }
 
 export interface UiModuleConfig {
+	breadcrumb: {
+		prefix: string | boolean;
+		useTitle: boolean;
+	};
 	dialog: {
 		theme?: NgxCoolDialogTheme;
 		titles?: {

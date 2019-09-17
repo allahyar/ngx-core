@@ -19,15 +19,14 @@ const routes: Routes = [
 			{
 				path: 'home', component: HomeComponent, data: {title: 'App'},
 				children: [
-					{path: 'product', component: ProductListComponent, data: {title: 'Product'}}
+					{path: 'product', component: ProductListComponent, data: {title: 'SHOP.TASAS'}}
 				]
 			},
 			{
 				path: 'users', component: UsersComponent, data: {title: 'Users'},
 				children: [
-					{
-						path: ':id/card', component: UserCardComponent, data: {title: 'Test'}
-					}
+					{path: ':id', redirectTo: ':id/card'},
+					{path: ':id/card', component: UserCardComponent, data: {title: 'Information'}}
 				]
 			}
 		]
