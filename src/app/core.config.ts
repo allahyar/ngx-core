@@ -35,7 +35,7 @@ export const AUTH_CONFIG: AuthModuleConfig = {
 
 export const UI_CONFIG: UiModuleConfig = {
 	breadcrumb: {
-		prefix: false,
+		prefix: 'home',
 		useTitle: true
 	},
 	dialog: {

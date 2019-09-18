@@ -35,7 +35,7 @@ export class BreadcrumbsService {
 	private _resolveCrumbs(route: ActivatedRoute) {
 
 		const path = route.routeConfig ? route.routeConfig.path : '';
-		const label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['breadcrumb'] || '' : '';
+		const label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['title'] || '' : '';
 
 		if (path.indexOf(':') !== -1) {
 			const sucked = path.split('/');

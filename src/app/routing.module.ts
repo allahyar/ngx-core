@@ -19,7 +19,7 @@ const routes: Routes = [
 			{
 				path: 'home', component: HomeComponent, data: {title: 'App'},
 				children: [
-					{path: 'product', component: ProductListComponent, data: {title: 'SHOP.TASAS'}}
+					{path: 'product', component: ProductListComponent, data: {title: 'adadad'}}
 				]
 			},
 			{

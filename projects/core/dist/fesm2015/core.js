@@ -18,7 +18,7 @@ import { BsModalService as BsModalService$1, BsModalRef as BsModalRef$1 } from '
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const MODULE_CONFIG_DEFAULTS = {};
@@ -41,7 +41,7 @@ const DIALOG_CONFIG_DEFAULTS = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const QUERY_SERVICE_TOKEN = new InjectionToken('QueryService');
@@ -52,7 +52,7 @@ const SUPPORT_LANG = new InjectionToken('SupportLang');
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -60,10 +60,42 @@ const SUPPORT_LANG = new InjectionToken('SupportLang');
  */
 class Query {
 }
+if (false) {
+    /**
+     * @abstract
+     * @param {?} info
+     * @return {?}
+     */
+    Query.prototype.grid = function (info) { };
+    /**
+     * @abstract
+     * @param {?} info
+     * @return {?}
+     */
+    Query.prototype.get = function (info) { };
+    /**
+     * @abstract
+     * @param {?} info
+     * @return {?}
+     */
+    Query.prototype.list = function (info) { };
+    /**
+     * @abstract
+     * @param {?} info
+     * @return {?}
+     */
+    Query.prototype.post = function (info) { };
+    /**
+     * @abstract
+     * @param {?} info
+     * @return {?}
+     */
+    Query.prototype.delete = function (info) { };
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -179,7 +211,7 @@ function GlobalInject(token, notFoundValue = null, flags) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -234,10 +266,29 @@ HttpProvider.ctorParameters = () => [
     { type: Injector }
 ];
 /** @nocollapse */ HttpProvider.ngInjectableDef = ɵɵdefineInjectable({ factory: function HttpProvider_Factory() { return new HttpProvider(ɵɵinject("config"), ɵɵinject(HttpClient), ɵɵinject(INJECTOR)); }, token: HttpProvider, providedIn: "root" });
+if (false) {
+    /** @type {?} */
+    HttpProvider.prototype._baseUrl;
+    /**
+     * @type {?}
+     * @private
+     */
+    HttpProvider.prototype.config;
+    /**
+     * @type {?}
+     * @private
+     */
+    HttpProvider.prototype.http;
+    /**
+     * @type {?}
+     * @private
+     */
+    HttpProvider.prototype.injector;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @template T
@@ -300,10 +351,19 @@ __decorate([
     InjectToken(HttpProvider),
     __metadata("design:type", HttpProvider)
 ], QueryService.prototype, "http", void 0);
+if (false) {
+    /** @type {?} */
+    QueryService.prototype.http;
+    /**
+     * @type {?}
+     * @private
+     */
+    QueryService.prototype.injector;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 // required for AOT compilation
 /**
@@ -366,6 +426,16 @@ function routePathExtract(path, route) {
     };
 }
 /**
+ * @record
+ */
+function IRoutePath() { }
+if (false) {
+    /** @type {?} */
+    IRoutePath.prototype.key;
+    /** @type {?} */
+    IRoutePath.prototype.label;
+}
+/**
  * @param {?} crumb
  * @return {?}
  */
@@ -375,7 +445,7 @@ function crumbCleaner(crumb) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class UiService {
     constructor() {
@@ -403,10 +473,14 @@ __decorate([
     InjectToken(DOCUMENT),
     __metadata("design:type", Document)
 ], UiService.prototype, "document", void 0);
+if (false) {
+    /** @type {?} */
+    UiService.prototype.document;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @param {?} obj
@@ -418,7 +492,7 @@ function isString(obj) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class CoreTranslateService {
     /**
@@ -491,10 +565,19 @@ CoreTranslateService.ctorParameters = () => [
     { type: TranslateService }
 ];
 /** @nocollapse */ CoreTranslateService.ngInjectableDef = ɵɵdefineInjectable({ factory: function CoreTranslateService_Factory() { return new CoreTranslateService(ɵɵinject(TranslateService)); }, token: CoreTranslateService, providedIn: "root" });
+if (false) {
+    /** @type {?} */
+    CoreTranslateService.prototype._isLoaded;
+    /**
+     * @type {?}
+     * @private
+     */
+    CoreTranslateService.prototype._translateService;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AuthenticationService {
     /**
@@ -603,10 +686,34 @@ __decorate([
     InjectToken(HttpProvider),
     __metadata("design:type", HttpProvider)
 ], AuthenticationService.prototype, "http", void 0);
+if (false) {
+    /** @type {?} */
+    AuthenticationService.prototype.http;
+    /**
+     * @type {?}
+     * @private
+     */
+    AuthenticationService.prototype._currentUserSubject;
+    /**
+     * @type {?}
+     * @private
+     */
+    AuthenticationService.prototype._currentUserValue;
+    /**
+     * @type {?}
+     * @private
+     */
+    AuthenticationService.prototype.config;
+    /**
+     * @type {?}
+     * @private
+     */
+    AuthenticationService.prototype.router;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AppLoadService {
     /**
@@ -662,10 +769,24 @@ __decorate([
     InjectToken(AuthenticationService),
     __metadata("design:type", AuthenticationService)
 ], AppLoadService.prototype, "_authService", void 0);
+if (false) {
+    /** @type {?} */
+    AppLoadService.prototype._authService;
+    /**
+     * @type {?}
+     * @private
+     */
+    AppLoadService.prototype._translateService;
+    /**
+     * @type {?}
+     * @private
+     */
+    AppLoadService.prototype.config;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class CoreHttpInterceptor {
     /**
@@ -700,10 +821,17 @@ CoreHttpInterceptor.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: ['config',] }] }
 ];
 /** @nocollapse */ CoreHttpInterceptor.ngInjectableDef = ɵɵdefineInjectable({ factory: function CoreHttpInterceptor_Factory() { return new CoreHttpInterceptor(ɵɵinject("config")); }, token: CoreHttpInterceptor, providedIn: "root" });
+if (false) {
+    /**
+     * @type {?}
+     * @private
+     */
+    CoreHttpInterceptor.prototype.config;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class BreadcrumbsService {
     /**
@@ -743,7 +871,7 @@ class BreadcrumbsService {
         /** @type {?} */
         const path = route.routeConfig ? route.routeConfig.path : '';
         /** @type {?} */
-        const label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['breadcrumb'] || '' : '';
+        const label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['title'] || '' : '';
         if (path.indexOf(':') !== -1) {
             /** @type {?} */
             const sucked = path.split('/');
@@ -843,10 +971,46 @@ BreadcrumbsService.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: ['uiConfig',] }] }
 ];
 /** @nocollapse */ BreadcrumbsService.ngInjectableDef = ɵɵdefineInjectable({ factory: function BreadcrumbsService_Factory() { return new BreadcrumbsService(ɵɵinject(Router), ɵɵinject(ActivatedRoute), ɵɵinject("uiConfig")); }, token: BreadcrumbsService, providedIn: "root" });
+if (false) {
+    /** @type {?} */
+    BreadcrumbsService.prototype.breadcrumbs$;
+    /**
+     * @type {?}
+     * @private
+     */
+    BreadcrumbsService.prototype.url;
+    /**
+     * @type {?}
+     * @private
+     */
+    BreadcrumbsService.prototype.router;
+    /**
+     * @type {?}
+     * @private
+     */
+    BreadcrumbsService.prototype.activatedRoute;
+    /**
+     * @type {?}
+     * @private
+     */
+    BreadcrumbsService.prototype.config;
+}
+/**
+ * @record
+ */
+function IBreadcrumb() { }
+if (false) {
+    /** @type {?} */
+    IBreadcrumb.prototype.label;
+    /** @type {?} */
+    IBreadcrumb.prototype.url;
+    /** @type {?} */
+    IBreadcrumb.prototype.key;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class BreadcrumbsComponent {
     /**
@@ -872,10 +1036,14 @@ BreadcrumbsComponent.decorators = [
 BreadcrumbsComponent.ctorParameters = () => [
     { type: BreadcrumbsService }
 ];
+if (false) {
+    /** @type {?} */
+    BreadcrumbsComponent.prototype._breadcrumbs;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class CoreModule {
     /**
@@ -963,10 +1131,16 @@ __decorate([
     InjectToken(UiService),
     __metadata("design:type", UiService)
 ], CoreModule.prototype, "_uiService", void 0);
+if (false) {
+    /** @type {?} */
+    CoreModule.prototype._translateService;
+    /** @type {?} */
+    CoreModule.prototype._uiService;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class TokenError extends Error {
     /**
@@ -976,6 +1150,10 @@ class TokenError extends Error {
         super(message);
         this.name = 'TokenError';
     }
+}
+if (false) {
+    /** @type {?} */
+    TokenError.prototype.name;
 }
 class Token {
     /**
@@ -1056,10 +1234,14 @@ class Token {
         return !(date.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)));
     }
 }
+if (false) {
+    /** @type {?} */
+    Token.prototype.token;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class TokenService {
     constructor() {
@@ -1105,10 +1287,17 @@ TokenService.decorators = [
 /** @nocollapse */
 TokenService.ctorParameters = () => [];
 /** @nocollapse */ TokenService.ngInjectableDef = ɵɵdefineInjectable({ factory: function TokenService_Factory() { return new TokenService(); }, token: TokenService, providedIn: "root" });
+if (false) {
+    /**
+     * @type {?}
+     * @private
+     */
+    TokenService.prototype._token;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class JwtInterceptor {
     /**
@@ -1147,10 +1336,22 @@ JwtInterceptor.ctorParameters = () => [
     { type: TokenService }
 ];
 /** @nocollapse */ JwtInterceptor.ngInjectableDef = ɵɵdefineInjectable({ factory: function JwtInterceptor_Factory() { return new JwtInterceptor(ɵɵinject("authConfig"), ɵɵinject(TokenService)); }, token: JwtInterceptor, providedIn: "root" });
+if (false) {
+    /**
+     * @type {?}
+     * @private
+     */
+    JwtInterceptor.prototype.config;
+    /**
+     * @type {?}
+     * @private
+     */
+    JwtInterceptor.prototype._tokenService;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LoggedInAuth {
     /**
@@ -1198,6 +1399,19 @@ __decorate([
     InjectToken(Router),
     __metadata("design:type", Router)
 ], LoggedInAuth.prototype, "_router", void 0);
+if (false) {
+    /** @type {?} */
+    LoggedInAuth.prototype._authenticationService;
+    /** @type {?} */
+    LoggedInAuth.prototype._tokenService;
+    /** @type {?} */
+    LoggedInAuth.prototype._router;
+    /**
+     * @type {?}
+     * @private
+     */
+    LoggedInAuth.prototype.config;
+}
 class LoggedOutAuth {
     /**
      * @param {?} config
@@ -1244,10 +1458,23 @@ __decorate([
     InjectToken(Router),
     __metadata("design:type", Router)
 ], LoggedOutAuth.prototype, "_router", void 0);
+if (false) {
+    /** @type {?} */
+    LoggedOutAuth.prototype._authenticationService;
+    /** @type {?} */
+    LoggedOutAuth.prototype._tokenService;
+    /** @type {?} */
+    LoggedOutAuth.prototype._router;
+    /**
+     * @type {?}
+     * @private
+     */
+    LoggedOutAuth.prototype.config;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AuthModule {
     /**
@@ -1278,7 +1505,7 @@ AuthModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class DialogService {
     /**
@@ -1343,10 +1570,29 @@ __decorate([
     InjectToken(NgxCoolDialogsService),
     __metadata("design:type", NgxCoolDialogsService)
 ], DialogService.prototype, "_dialogService", void 0);
+if (false) {
+    /** @type {?} */
+    DialogService.prototype._dialogService;
+    /**
+     * @type {?}
+     * @private
+     */
+    DialogService.prototype._config;
+    /**
+     * @type {?}
+     * @private
+     */
+    DialogService.prototype.config;
+    /**
+     * @type {?}
+     * @private
+     */
+    DialogService.prototype._translateService;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ToastTemplateComponent {
 }
@@ -1374,10 +1620,14 @@ ToastTemplateComponent.decorators = [
 ToastTemplateComponent.propDecorators = {
     toast: [{ type: Input }]
 };
+if (false) {
+    /** @type {?} */
+    ToastTemplateComponent.prototype.toast;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ToastService {
     /**
@@ -1455,10 +1705,27 @@ ToastService.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: ['uiConfig',] }] }
 ];
 /** @nocollapse */ ToastService.ngInjectableDef = ɵɵdefineInjectable({ factory: function ToastService_Factory() { return new ToastService(ɵɵinject(CoreTranslateService), ɵɵinject(Toaster$1), ɵɵinject("uiConfig")); }, token: ToastService, providedIn: "root" });
+if (false) {
+    /**
+     * @type {?}
+     * @private
+     */
+    ToastService.prototype._translateService;
+    /**
+     * @type {?}
+     * @private
+     */
+    ToastService.prototype._toast;
+    /**
+     * @type {?}
+     * @private
+     */
+    ToastService.prototype.config;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ModalTemplateComponent {
     /**
@@ -1596,10 +1863,37 @@ ModalTemplateComponent.propDecorators = {
                     static: true
                 },] }]
 };
+if (false) {
+    /** @type {?} */
+    ModalTemplateComponent.prototype.form;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.onSubmit;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.title;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.type;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.data;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.component;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.componentRef;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.loading;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.promise;
+    /** @type {?} */
+    ModalTemplateComponent.prototype.container;
+    /**
+     * @type {?}
+     * @private
+     */
+    ModalTemplateComponent.prototype.modalRef;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const formDirectiveProvider = {
@@ -1625,7 +1919,7 @@ NgFormDirective.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ProgressButtonDirective {
     /**
@@ -1713,10 +2007,18 @@ ProgressButtonDirective.propDecorators = {
     progress: [{ type: Input }],
     handleButton: [{ type: HostListener, args: ['click',] }]
 };
+if (false) {
+    /** @type {?} */
+    ProgressButtonDirective.prototype.element;
+    /** @type {?} */
+    ProgressButtonDirective.prototype.promise;
+    /** @type {?} */
+    ProgressButtonDirective.prototype.isPromiseDone;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class UIModule {
     /**
@@ -1762,7 +2064,202 @@ UIModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @record
+ */
+function CoreModuleConfig() { }
+if (false) {
+    /** @type {?} */
+    CoreModuleConfig.prototype.api;
+    /** @type {?} */
+    CoreModuleConfig.prototype.storage;
+    /** @type {?} */
+    CoreModuleConfig.prototype.language;
+}
+/**
+ * @record
+ */
+function AuthModuleConfig() { }
+if (false) {
+    /** @type {?} */
+    AuthModuleConfig.prototype.loginEndPoint;
+    /** @type {?} */
+    AuthModuleConfig.prototype.logoutEndPoint;
+    /** @type {?} */
+    AuthModuleConfig.prototype.loginTokenName;
+    /** @type {?} */
+    AuthModuleConfig.prototype.headerPrefix;
+    /** @type {?} */
+    AuthModuleConfig.prototype.useTokenVerify;
+    /** @type {?} */
+    AuthModuleConfig.prototype.tokenVerifyEndPoint;
+    /** @type {?} */
+    AuthModuleConfig.prototype.guards;
+}
+/**
+ * @record
+ */
+function UiModuleConfig() { }
+if (false) {
+    /** @type {?} */
+    UiModuleConfig.prototype.breadcrumb;
+    /** @type {?} */
+    UiModuleConfig.prototype.dialog;
+    /** @type {?} */
+    UiModuleConfig.prototype.toast;
+}
+/**
+ * @record
+ */
+function LoginParams() { }
+/**
+ * @record
+ */
+function LocalStorageConfig() { }
+if (false) {
+    /** @type {?|undefined} */
+    LocalStorageConfig.prototype.prefix;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @record
+ */
+function DataInfo() { }
+if (false) {
+    /** @type {?} */
+    DataInfo.prototype.url;
+    /** @type {?|undefined} */
+    DataInfo.prototype.errors;
+    /** @type {?|undefined} */
+    DataInfo.prototype.result;
+}
+/**
+ * @record
+ */
+function DataGridParams() { }
+if (false) {
+    /** @type {?|undefined} */
+    DataGridParams.prototype.pageIndex;
+    /** @type {?|undefined} */
+    DataGridParams.prototype.pageCount;
+    /** @type {?|undefined} */
+    DataGridParams.prototype.sort;
+    /** @type {?|undefined} */
+    DataGridParams.prototype.skip;
+    /** @type {?|undefined} */
+    DataGridParams.prototype.filter;
+}
+/**
+ * @record
+ */
+function FilterItems() { }
+if (false) {
+    /** @type {?} */
+    FilterItems.prototype.condition;
+    /** @type {?} */
+    FilterItems.prototype.filters;
+}
+/**
+ * @record
+ */
+function FilterItem() { }
+if (false) {
+    /** @type {?|undefined} */
+    FilterItem.prototype.field;
+    /** @type {?|undefined} */
+    FilterItem.prototype.operator;
+    /** @type {?|undefined} */
+    FilterItem.prototype.value;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @record
+ */
+function IBaseModal() { }
+if (false) {
+    /** @type {?} */
+    IBaseModal.prototype.type;
+    /** @type {?} */
+    IBaseModal.prototype.data;
+    /**
+     * @param {?=} data
+     * @return {?}
+     */
+    IBaseModal.prototype.onSave = function (data) { };
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @record
+ * @template T
+ */
+function DataSource() { }
+if (false) {
+    /** @type {?} */
+    DataSource.prototype.dataObservable;
+    /** @type {?} */
+    DataSource.prototype.currentData;
+    /**
+     * @param {?=} remoteDataParams
+     * @param {?=} dataParameters
+     * @return {?}
+     */
+    DataSource.prototype.loadData = function (remoteDataParams, dataParameters) { };
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @record
+ * @template T
+ */
+function ServerResponse() { }
+if (false) {
+    /** @type {?|undefined} */
+    ServerResponse.prototype.result;
+    /** @type {?|undefined} */
+    ServerResponse.prototype.message;
+    /** @type {?|undefined} */
+    ServerResponse.prototype.errors;
+    /** @type {?|undefined} */
+    ServerResponse.prototype.status_code;
+    /** @type {?|undefined} */
+    ServerResponse.prototype.success;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -1784,10 +2281,14 @@ class Base {
         this.isAlive = false;
     }
 }
+if (false) {
+    /** @type {?} */
+    Base.prototype.isAlive;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ModalService {
     /**
@@ -1834,10 +2335,48 @@ ModalService.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: ['uiConfig',] }] }
 ];
 /** @nocollapse */ ModalService.ngInjectableDef = ɵɵdefineInjectable({ factory: function ModalService_Factory() { return new ModalService(ɵɵinject(BsModalService$1), ɵɵinject(ComponentFactoryResolver), ɵɵinject(BsModalRef$1), ɵɵinject(INJECTOR), ɵɵinject("uiConfig")); }, token: ModalService, providedIn: "root" });
+if (false) {
+    /**
+     * @type {?}
+     * @private
+     */
+    ModalService.prototype._modalService;
+    /**
+     * @type {?}
+     * @private
+     */
+    ModalService.prototype.resolver;
+    /** @type {?} */
+    ModalService.prototype.modalRef;
+    /**
+     * @type {?}
+     * @private
+     */
+    ModalService.prototype.injector;
+    /**
+     * @type {?}
+     * @private
+     */
+    ModalService.prototype.config;
+}
+/**
+ * @record
+ */
+function IModalConfig() { }
+if (false) {
+    /** @type {?|undefined} */
+    IModalConfig.prototype.title;
+    /** @type {?|undefined} */
+    IModalConfig.prototype.type;
+    /** @type {?|undefined} */
+    IModalConfig.prototype.data;
+    /** @type {?|undefined} */
+    IModalConfig.prototype.class;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class Modal extends Base {
 }
@@ -1845,10 +2384,23 @@ __decorate([
     InjectToken(ModalService),
     __metadata("design:type", ModalService)
 ], Modal.prototype, "modalService", void 0);
+if (false) {
+    /** @type {?} */
+    Modal.prototype.type;
+    /** @type {?} */
+    Modal.prototype.data;
+    /** @type {?} */
+    Modal.prototype.modalService;
+}
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LocalStorage {
     /**
@@ -1947,6 +2499,30 @@ LocalStorage.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: ['config',] }] }
 ];
 /** @nocollapse */ LocalStorage.ngInjectableDef = ɵɵdefineInjectable({ factory: function LocalStorage_Factory() { return new LocalStorage(ɵɵinject("config")); }, token: LocalStorage, providedIn: "root" });
+if (false) {
+    /** @type {?} */
+    LocalStorage.prototype._prefix;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 
 export { AUTH_CONFIG_DEFAULTS, AuthModule, AuthenticationService, Base, BreadcrumbsComponent, BreadcrumbsService, CoreModule, CoreTranslateService, DEFAULT_LANG, DIALOG_CONFIG_DEFAULTS, DialogService, GlobalInject, HttpLoaderFactory, HttpProvider, InjectToken, LOCAL_STORAGE_CONFIG_DEFAULTS, LocalStorage, LoggedInAuth, LoggedOutAuth, MODULE_CONFIG_DEFAULTS, Modal, ModalService, ModalTemplateComponent, QUERY_SERVICE_TOKEN, Query, QueryService, SUPPORT_LANG, ToastService, ToastTemplateComponent, Token, TokenError, UIModule, UiService, crumbCleaner, initializeApp, isEmpty, isString, routePathExtract, translateModuleOptions, AppLoadService as ɵa, CoreHttpInterceptor as ɵb, TokenService as ɵc, JwtInterceptor as ɵd, formDirectiveProvider as ɵe, NgFormDirective as ɵf, ProgressButtonDirective as ɵg };
 //# sourceMappingURL=core.js.map

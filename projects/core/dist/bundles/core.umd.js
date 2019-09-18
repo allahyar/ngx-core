@@ -33,6 +33,29 @@
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
 
+    var __assign = function() {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
+    };
+
+    function __rest(s, e) {
+        var t = {};
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+            t[p] = s[p];
+        if (s != null && typeof Object.getOwnPropertySymbols === "function")
+            for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+                if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                    t[p[i]] = s[p[i]];
+            }
+        return t;
+    }
+
     function __decorate(decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -40,8 +63,64 @@
         return c > 3 && r && Object.defineProperty(target, key, r), r;
     }
 
+    function __param(paramIndex, decorator) {
+        return function (target, key) { decorator(target, key, paramIndex); }
+    }
+
     function __metadata(metadataKey, metadataValue) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+    }
+
+    function __awaiter(thisArg, _arguments, P, generator) {
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    }
+
+    function __generator(thisArg, body) {
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        function verb(n) { return function (v) { return step([n, v]); }; }
+        function step(op) {
+            if (f) throw new TypeError("Generator is already executing.");
+            while (_) try {
+                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+                if (y = 0, t) op = [op[0] & 2, t.value];
+                switch (op[0]) {
+                    case 0: case 1: t = op; break;
+                    case 4: _.label++; return { value: op[1], done: false };
+                    case 5: _.label++; y = op[1]; op = [0]; continue;
+                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                    default:
+                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                        if (t[2]) _.ops.pop();
+                        _.trys.pop(); continue;
+                }
+                op = body.call(thisArg, _);
+            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+        }
+    }
+
+    function __exportStar(m, exports) {
+        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+    }
+
+    function __values(o) {
+        var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+        if (m) return m.call(o);
+        return {
+            next: function () {
+                if (o && i >= o.length) o = void 0;
+                return { value: o && o[i++], done: !o };
+            }
+        };
     }
 
     function __read(o, n) {
@@ -67,9 +146,64 @@
         return ar;
     }
 
+    function __spreadArrays() {
+        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+        for (var r = Array(s), k = 0, i = 0; i < il; i++)
+            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+                r[k] = a[j];
+        return r;
+    };
+
+    function __await(v) {
+        return this instanceof __await ? (this.v = v, this) : new __await(v);
+    }
+
+    function __asyncGenerator(thisArg, _arguments, generator) {
+        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        var g = generator.apply(thisArg, _arguments || []), i, q = [];
+        return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+        function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+        function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+        function fulfill(value) { resume("next", value); }
+        function reject(value) { resume("throw", value); }
+        function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+    }
+
+    function __asyncDelegator(o) {
+        var i, p;
+        return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+        function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
+    }
+
+    function __asyncValues(o) {
+        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+        var m = o[Symbol.asyncIterator], i;
+        return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+        function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+    }
+
+    function __makeTemplateObject(cooked, raw) {
+        if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+        return cooked;
+    };
+
+    function __importStar(mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+        result.default = mod;
+        return result;
+    }
+
+    function __importDefault(mod) {
+        return (mod && mod.__esModule) ? mod : { default: mod };
+    }
+
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /** @type {?} */
     var MODULE_CONFIG_DEFAULTS = {};
@@ -92,7 +226,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /** @type {?} */
     var QUERY_SERVICE_TOKEN = new core.InjectionToken('QueryService');
@@ -103,7 +237,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * @abstract
@@ -118,10 +252,42 @@
         }
         return Query;
     }());
+    if (false) {
+        /**
+         * @abstract
+         * @param {?} info
+         * @return {?}
+         */
+        Query.prototype.grid = function (info) { };
+        /**
+         * @abstract
+         * @param {?} info
+         * @return {?}
+         */
+        Query.prototype.get = function (info) { };
+        /**
+         * @abstract
+         * @param {?} info
+         * @return {?}
+         */
+        Query.prototype.list = function (info) { };
+        /**
+         * @abstract
+         * @param {?} info
+         * @return {?}
+         */
+        Query.prototype.post = function (info) { };
+        /**
+         * @abstract
+         * @param {?} info
+         * @return {?}
+         */
+        Query.prototype.delete = function (info) { };
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * @template T
@@ -239,7 +405,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * @template T
@@ -301,10 +467,29 @@
         /** @nocollapse */ HttpProvider.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function HttpProvider_Factory() { return new HttpProvider(core.ɵɵinject("config"), core.ɵɵinject(http.HttpClient), core.ɵɵinject(core.INJECTOR)); }, token: HttpProvider, providedIn: "root" });
         return HttpProvider;
     }());
+    if (false) {
+        /** @type {?} */
+        HttpProvider.prototype._baseUrl;
+        /**
+         * @type {?}
+         * @private
+         */
+        HttpProvider.prototype.config;
+        /**
+         * @type {?}
+         * @private
+         */
+        HttpProvider.prototype.http;
+        /**
+         * @type {?}
+         * @private
+         */
+        HttpProvider.prototype.injector;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * @template T
@@ -387,10 +572,19 @@
         ], QueryService.prototype, "http", void 0);
         return QueryService;
     }(Query));
+    if (false) {
+        /** @type {?} */
+        QueryService.prototype.http;
+        /**
+         * @type {?}
+         * @private
+         */
+        QueryService.prototype.injector;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     // required for AOT compilation
     /**
@@ -453,6 +647,16 @@
         };
     }
     /**
+     * @record
+     */
+    function IRoutePath() { }
+    if (false) {
+        /** @type {?} */
+        IRoutePath.prototype.key;
+        /** @type {?} */
+        IRoutePath.prototype.label;
+    }
+    /**
      * @param {?} crumb
      * @return {?}
      */
@@ -462,7 +666,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var UiService = /** @class */ (function () {
         function UiService() {
@@ -499,10 +703,14 @@
         ], UiService.prototype, "document", void 0);
         return UiService;
     }());
+    if (false) {
+        /** @type {?} */
+        UiService.prototype.document;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * @param {?} obj
@@ -514,7 +722,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var CoreTranslateService = /** @class */ (function () {
         function CoreTranslateService(_translateService) {
@@ -610,10 +818,19 @@
         /** @nocollapse */ CoreTranslateService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function CoreTranslateService_Factory() { return new CoreTranslateService(core.ɵɵinject(core$1.TranslateService)); }, token: CoreTranslateService, providedIn: "root" });
         return CoreTranslateService;
     }());
+    if (false) {
+        /** @type {?} */
+        CoreTranslateService.prototype._isLoaded;
+        /**
+         * @type {?}
+         * @private
+         */
+        CoreTranslateService.prototype._translateService;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AuthenticationService = /** @class */ (function () {
         function AuthenticationService(config, router) {
@@ -749,10 +966,34 @@
         ], AuthenticationService.prototype, "http", void 0);
         return AuthenticationService;
     }());
+    if (false) {
+        /** @type {?} */
+        AuthenticationService.prototype.http;
+        /**
+         * @type {?}
+         * @private
+         */
+        AuthenticationService.prototype._currentUserSubject;
+        /**
+         * @type {?}
+         * @private
+         */
+        AuthenticationService.prototype._currentUserValue;
+        /**
+         * @type {?}
+         * @private
+         */
+        AuthenticationService.prototype.config;
+        /**
+         * @type {?}
+         * @private
+         */
+        AuthenticationService.prototype.router;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AppLoadService = /** @class */ (function () {
         function AppLoadService(_translateService, config) {
@@ -809,10 +1050,24 @@
         ], AppLoadService.prototype, "_authService", void 0);
         return AppLoadService;
     }());
+    if (false) {
+        /** @type {?} */
+        AppLoadService.prototype._authService;
+        /**
+         * @type {?}
+         * @private
+         */
+        AppLoadService.prototype._translateService;
+        /**
+         * @type {?}
+         * @private
+         */
+        AppLoadService.prototype.config;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var CoreHttpInterceptor = /** @class */ (function () {
         function CoreHttpInterceptor(config) {
@@ -850,10 +1105,17 @@
         /** @nocollapse */ CoreHttpInterceptor.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function CoreHttpInterceptor_Factory() { return new CoreHttpInterceptor(core.ɵɵinject("config")); }, token: CoreHttpInterceptor, providedIn: "root" });
         return CoreHttpInterceptor;
     }());
+    if (false) {
+        /**
+         * @type {?}
+         * @private
+         */
+        CoreHttpInterceptor.prototype.config;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var BreadcrumbsService = /** @class */ (function () {
         function BreadcrumbsService(router$1, activatedRoute, config) {
@@ -895,7 +1157,7 @@
             /** @type {?} */
             var path = route.routeConfig ? route.routeConfig.path : '';
             /** @type {?} */
-            var label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['breadcrumb'] || '' : '';
+            var label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['title'] || '' : '';
             if (path.indexOf(':') !== -1) {
                 /** @type {?} */
                 var sucked = path.split('/');
@@ -1017,10 +1279,46 @@
         /** @nocollapse */ BreadcrumbsService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function BreadcrumbsService_Factory() { return new BreadcrumbsService(core.ɵɵinject(router.Router), core.ɵɵinject(router.ActivatedRoute), core.ɵɵinject("uiConfig")); }, token: BreadcrumbsService, providedIn: "root" });
         return BreadcrumbsService;
     }());
+    if (false) {
+        /** @type {?} */
+        BreadcrumbsService.prototype.breadcrumbs$;
+        /**
+         * @type {?}
+         * @private
+         */
+        BreadcrumbsService.prototype.url;
+        /**
+         * @type {?}
+         * @private
+         */
+        BreadcrumbsService.prototype.router;
+        /**
+         * @type {?}
+         * @private
+         */
+        BreadcrumbsService.prototype.activatedRoute;
+        /**
+         * @type {?}
+         * @private
+         */
+        BreadcrumbsService.prototype.config;
+    }
+    /**
+     * @record
+     */
+    function IBreadcrumb() { }
+    if (false) {
+        /** @type {?} */
+        IBreadcrumb.prototype.label;
+        /** @type {?} */
+        IBreadcrumb.prototype.url;
+        /** @type {?} */
+        IBreadcrumb.prototype.key;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var BreadcrumbsComponent = /** @class */ (function () {
         function BreadcrumbsComponent(_breadcrumbs) {
@@ -1047,10 +1345,14 @@
         ]; };
         return BreadcrumbsComponent;
     }());
+    if (false) {
+        /** @type {?} */
+        BreadcrumbsComponent.prototype._breadcrumbs;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var CoreModule = /** @class */ (function () {
         function CoreModule(defaultLang, supportLang, injector) {
@@ -1139,10 +1441,16 @@
         ], CoreModule.prototype, "_uiService", void 0);
         return CoreModule;
     }());
+    if (false) {
+        /** @type {?} */
+        CoreModule.prototype._translateService;
+        /** @type {?} */
+        CoreModule.prototype._uiService;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var TokenError = /** @class */ (function (_super) {
         __extends(TokenError, _super);
@@ -1153,6 +1461,10 @@
         }
         return TokenError;
     }(Error));
+    if (false) {
+        /** @type {?} */
+        TokenError.prototype.name;
+    }
     var Token = /** @class */ (function () {
         function Token(token) {
             this.token = token;
@@ -1246,10 +1558,14 @@
         };
         return Token;
     }());
+    if (false) {
+        /** @type {?} */
+        Token.prototype.token;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var TokenService = /** @class */ (function () {
         function TokenService() {
@@ -1325,10 +1641,17 @@
         /** @nocollapse */ TokenService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function TokenService_Factory() { return new TokenService(); }, token: TokenService, providedIn: "root" });
         return TokenService;
     }());
+    if (false) {
+        /**
+         * @type {?}
+         * @private
+         */
+        TokenService.prototype._token;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var JwtInterceptor = /** @class */ (function () {
         function JwtInterceptor(config, _tokenService) {
@@ -1369,10 +1692,22 @@
         /** @nocollapse */ JwtInterceptor.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function JwtInterceptor_Factory() { return new JwtInterceptor(core.ɵɵinject("authConfig"), core.ɵɵinject(TokenService)); }, token: JwtInterceptor, providedIn: "root" });
         return JwtInterceptor;
     }());
+    if (false) {
+        /**
+         * @type {?}
+         * @private
+         */
+        JwtInterceptor.prototype.config;
+        /**
+         * @type {?}
+         * @private
+         */
+        JwtInterceptor.prototype._tokenService;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var LoggedInAuth = /** @class */ (function () {
         function LoggedInAuth(config) {
@@ -1421,6 +1756,19 @@
         ], LoggedInAuth.prototype, "_router", void 0);
         return LoggedInAuth;
     }());
+    if (false) {
+        /** @type {?} */
+        LoggedInAuth.prototype._authenticationService;
+        /** @type {?} */
+        LoggedInAuth.prototype._tokenService;
+        /** @type {?} */
+        LoggedInAuth.prototype._router;
+        /**
+         * @type {?}
+         * @private
+         */
+        LoggedInAuth.prototype.config;
+    }
     var LoggedOutAuth = /** @class */ (function () {
         function LoggedOutAuth(config) {
             this.config = config;
@@ -1468,10 +1816,23 @@
         ], LoggedOutAuth.prototype, "_router", void 0);
         return LoggedOutAuth;
     }());
+    if (false) {
+        /** @type {?} */
+        LoggedOutAuth.prototype._authenticationService;
+        /** @type {?} */
+        LoggedOutAuth.prototype._tokenService;
+        /** @type {?} */
+        LoggedOutAuth.prototype._router;
+        /**
+         * @type {?}
+         * @private
+         */
+        LoggedOutAuth.prototype.config;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AuthModule = /** @class */ (function () {
         function AuthModule() {
@@ -1509,7 +1870,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var DialogService = /** @class */ (function () {
         function DialogService(config, _translateService) {
@@ -1586,10 +1947,29 @@
         ], DialogService.prototype, "_dialogService", void 0);
         return DialogService;
     }());
+    if (false) {
+        /** @type {?} */
+        DialogService.prototype._dialogService;
+        /**
+         * @type {?}
+         * @private
+         */
+        DialogService.prototype._config;
+        /**
+         * @type {?}
+         * @private
+         */
+        DialogService.prototype.config;
+        /**
+         * @type {?}
+         * @private
+         */
+        DialogService.prototype._translateService;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ToastTemplateComponent = /** @class */ (function () {
         function ToastTemplateComponent() {
@@ -1606,10 +1986,14 @@
         };
         return ToastTemplateComponent;
     }());
+    if (false) {
+        /** @type {?} */
+        ToastTemplateComponent.prototype.toast;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ToastService = /** @class */ (function () {
         function ToastService(_translateService, _toast, config) {
@@ -1707,10 +2091,27 @@
         /** @nocollapse */ ToastService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function ToastService_Factory() { return new ToastService(core.ɵɵinject(CoreTranslateService), core.ɵɵinject(toaster.Toaster), core.ɵɵinject("uiConfig")); }, token: ToastService, providedIn: "root" });
         return ToastService;
     }());
+    if (false) {
+        /**
+         * @type {?}
+         * @private
+         */
+        ToastService.prototype._translateService;
+        /**
+         * @type {?}
+         * @private
+         */
+        ToastService.prototype._toast;
+        /**
+         * @type {?}
+         * @private
+         */
+        ToastService.prototype.config;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ModalTemplateComponent = /** @class */ (function () {
         function ModalTemplateComponent(modalRef) {
@@ -1851,10 +2252,37 @@
         };
         return ModalTemplateComponent;
     }());
+    if (false) {
+        /** @type {?} */
+        ModalTemplateComponent.prototype.form;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.onSubmit;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.title;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.type;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.data;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.component;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.componentRef;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.loading;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.promise;
+        /** @type {?} */
+        ModalTemplateComponent.prototype.container;
+        /**
+         * @type {?}
+         * @private
+         */
+        ModalTemplateComponent.prototype.modalRef;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /** @type {?} */
     var formDirectiveProvider = {
@@ -1881,7 +2309,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ProgressButtonDirective = /** @class */ (function () {
         function ProgressButtonDirective(el) {
@@ -1984,10 +2412,18 @@
         };
         return ProgressButtonDirective;
     }());
+    if (false) {
+        /** @type {?} */
+        ProgressButtonDirective.prototype.element;
+        /** @type {?} */
+        ProgressButtonDirective.prototype.promise;
+        /** @type {?} */
+        ProgressButtonDirective.prototype.isPromiseDone;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var UIModule = /** @class */ (function () {
         function UIModule() {
@@ -2040,7 +2476,202 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /**
+     * @record
+     */
+    function CoreModuleConfig() { }
+    if (false) {
+        /** @type {?} */
+        CoreModuleConfig.prototype.api;
+        /** @type {?} */
+        CoreModuleConfig.prototype.storage;
+        /** @type {?} */
+        CoreModuleConfig.prototype.language;
+    }
+    /**
+     * @record
+     */
+    function AuthModuleConfig() { }
+    if (false) {
+        /** @type {?} */
+        AuthModuleConfig.prototype.loginEndPoint;
+        /** @type {?} */
+        AuthModuleConfig.prototype.logoutEndPoint;
+        /** @type {?} */
+        AuthModuleConfig.prototype.loginTokenName;
+        /** @type {?} */
+        AuthModuleConfig.prototype.headerPrefix;
+        /** @type {?} */
+        AuthModuleConfig.prototype.useTokenVerify;
+        /** @type {?} */
+        AuthModuleConfig.prototype.tokenVerifyEndPoint;
+        /** @type {?} */
+        AuthModuleConfig.prototype.guards;
+    }
+    /**
+     * @record
+     */
+    function UiModuleConfig() { }
+    if (false) {
+        /** @type {?} */
+        UiModuleConfig.prototype.breadcrumb;
+        /** @type {?} */
+        UiModuleConfig.prototype.dialog;
+        /** @type {?} */
+        UiModuleConfig.prototype.toast;
+    }
+    /**
+     * @record
+     */
+    function LoginParams() { }
+    /**
+     * @record
+     */
+    function LocalStorageConfig() { }
+    if (false) {
+        /** @type {?|undefined} */
+        LocalStorageConfig.prototype.prefix;
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /**
+     * @record
+     */
+    function DataInfo() { }
+    if (false) {
+        /** @type {?} */
+        DataInfo.prototype.url;
+        /** @type {?|undefined} */
+        DataInfo.prototype.errors;
+        /** @type {?|undefined} */
+        DataInfo.prototype.result;
+    }
+    /**
+     * @record
+     */
+    function DataGridParams() { }
+    if (false) {
+        /** @type {?|undefined} */
+        DataGridParams.prototype.pageIndex;
+        /** @type {?|undefined} */
+        DataGridParams.prototype.pageCount;
+        /** @type {?|undefined} */
+        DataGridParams.prototype.sort;
+        /** @type {?|undefined} */
+        DataGridParams.prototype.skip;
+        /** @type {?|undefined} */
+        DataGridParams.prototype.filter;
+    }
+    /**
+     * @record
+     */
+    function FilterItems() { }
+    if (false) {
+        /** @type {?} */
+        FilterItems.prototype.condition;
+        /** @type {?} */
+        FilterItems.prototype.filters;
+    }
+    /**
+     * @record
+     */
+    function FilterItem() { }
+    if (false) {
+        /** @type {?|undefined} */
+        FilterItem.prototype.field;
+        /** @type {?|undefined} */
+        FilterItem.prototype.operator;
+        /** @type {?|undefined} */
+        FilterItem.prototype.value;
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /**
+     * @record
+     */
+    function IBaseModal() { }
+    if (false) {
+        /** @type {?} */
+        IBaseModal.prototype.type;
+        /** @type {?} */
+        IBaseModal.prototype.data;
+        /**
+         * @param {?=} data
+         * @return {?}
+         */
+        IBaseModal.prototype.onSave = function (data) { };
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /**
+     * @record
+     * @template T
+     */
+    function DataSource() { }
+    if (false) {
+        /** @type {?} */
+        DataSource.prototype.dataObservable;
+        /** @type {?} */
+        DataSource.prototype.currentData;
+        /**
+         * @param {?=} remoteDataParams
+         * @param {?=} dataParameters
+         * @return {?}
+         */
+        DataSource.prototype.loadData = function (remoteDataParams, dataParameters) { };
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    /**
+     * @record
+     * @template T
+     */
+    function ServerResponse() { }
+    if (false) {
+        /** @type {?|undefined} */
+        ServerResponse.prototype.result;
+        /** @type {?|undefined} */
+        ServerResponse.prototype.message;
+        /** @type {?|undefined} */
+        ServerResponse.prototype.errors;
+        /** @type {?|undefined} */
+        ServerResponse.prototype.status_code;
+        /** @type {?|undefined} */
+        ServerResponse.prototype.success;
+    }
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * @abstract
@@ -2075,10 +2706,14 @@
         };
         return Base;
     }());
+    if (false) {
+        /** @type {?} */
+        Base.prototype.isAlive;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ModalService = /** @class */ (function () {
         function ModalService(_modalService, resolver, modalRef, injector, config) {
@@ -2124,10 +2759,48 @@
         /** @nocollapse */ ModalService.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function ModalService_Factory() { return new ModalService(core.ɵɵinject(modal.BsModalService), core.ɵɵinject(core.ComponentFactoryResolver), core.ɵɵinject(modal.BsModalRef), core.ɵɵinject(core.INJECTOR), core.ɵɵinject("uiConfig")); }, token: ModalService, providedIn: "root" });
         return ModalService;
     }());
+    if (false) {
+        /**
+         * @type {?}
+         * @private
+         */
+        ModalService.prototype._modalService;
+        /**
+         * @type {?}
+         * @private
+         */
+        ModalService.prototype.resolver;
+        /** @type {?} */
+        ModalService.prototype.modalRef;
+        /**
+         * @type {?}
+         * @private
+         */
+        ModalService.prototype.injector;
+        /**
+         * @type {?}
+         * @private
+         */
+        ModalService.prototype.config;
+    }
+    /**
+     * @record
+     */
+    function IModalConfig() { }
+    if (false) {
+        /** @type {?|undefined} */
+        IModalConfig.prototype.title;
+        /** @type {?|undefined} */
+        IModalConfig.prototype.type;
+        /** @type {?|undefined} */
+        IModalConfig.prototype.data;
+        /** @type {?|undefined} */
+        IModalConfig.prototype.class;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var Modal = /** @class */ (function (_super) {
         __extends(Modal, _super);
@@ -2140,10 +2813,23 @@
         ], Modal.prototype, "modalService", void 0);
         return Modal;
     }(Base));
+    if (false) {
+        /** @type {?} */
+        Modal.prototype.type;
+        /** @type {?} */
+        Modal.prototype.data;
+        /** @type {?} */
+        Modal.prototype.modalService;
+    }
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var LocalStorage = /** @class */ (function () {
         function LocalStorage(config) {
@@ -2269,6 +2955,10 @@
         /** @nocollapse */ LocalStorage.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function LocalStorage_Factory() { return new LocalStorage(core.ɵɵinject("config")); }, token: LocalStorage, providedIn: "root" });
         return LocalStorage;
     }());
+    if (false) {
+        /** @type {?} */
+        LocalStorage.prototype._prefix;
+    }
 
     exports.AUTH_CONFIG_DEFAULTS = AUTH_CONFIG_DEFAULTS;
     exports.AuthModule = AuthModule;
