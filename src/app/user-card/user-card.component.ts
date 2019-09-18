@@ -3,8 +3,7 @@ import {BreadcrumbsService} from 'core';
 
 @Component({
 	selector: 'app-user-card',
-	templateUrl: './user-card.component.html',
-	styleUrls: ['./user-card.component.scss']
+	templateUrl: './user-card.component.html'
 })
 export class UserCardComponent implements OnInit {
 

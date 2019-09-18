@@ -821,37 +821,30 @@ var BreadcrumbsService = /** @class */ (function () {
          */
         function (e) {
             /** @type {?} */
-            var prefix = _this.config.breadcrumb.prefix;
+            var prefix = (config.breadcrumb.prefix);
+            _this.url = (prefix) ? '/' : '';
             /** @type {?} */
-            var crumb = (prefix) ? [{ label: prefix.toString(), url: '', key: null }] : [];
+            var crumb = (prefix) ? [{ label: prefix.toString(), url: _this.url, key: null }] : [];
             _this.breadcrumbs$.next(crumb);
             _this._resolveCrumbs(activatedRoute.root);
-            if (_this.config.breadcrumb.useTitle) {
-                console.log(activatedRoute.root.firstChild);
-            }
         }));
     }
     /**
      * @private
      * @param {?} route
-     * @param {?=} url
      * @return {?}
      */
     BreadcrumbsService.prototype._resolveCrumbs = /**
      * @private
      * @param {?} route
-     * @param {?=} url
      * @return {?}
      */
-    function (route, url) {
+    function (route) {
         var _this = this;
-        if (url === void 0) { url = ''; }
         /** @type {?} */
         var path = route.routeConfig ? route.routeConfig.path : '';
         /** @type {?} */
-        var label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['title'] || '' : 'Home';
-        /** @type {?} */
-        var nextUrl;
+        var label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['breadcrumb'] || '' : '';
         if (path.indexOf(':') !== -1) {
             /** @type {?} */
             var sucked = path.split('/');
@@ -862,24 +855,24 @@ var BreadcrumbsService = /** @class */ (function () {
             function (crumb) {
                 if (crumb.indexOf(':', 0) === 0) {
                     /** @type {?} */
-                    var key = crumbCleaner(crumb);
+                    var key = crumb.substr(1);
                     /** @type {?} */
                     var newLabel = route.snapshot.params[key];
-                    nextUrl = "" + url + newLabel + "/";
-                    _this.push(newLabel, key, nextUrl);
+                    _this.url += newLabel + "/";
+                    _this.push(newLabel, key, _this.url);
                 }
                 else {
-                    nextUrl = "" + url + crumb + "/";
-                    _this.push(label, null, nextUrl);
+                    _this.url += crumb + "/";
+                    _this.push(label, null, _this.url);
                 }
             }));
         }
         else {
-            nextUrl = "" + url + path + "/";
-            this.push(label, null, nextUrl);
+            this.url += path + "/";
+            this.push(label, null, this.url);
         }
         if (route.firstChild) {
-            return this._resolveCrumbs(route.firstChild, url);
+            return this._resolveCrumbs(route.firstChild);
         }
     };
     Object.defineProperty(BreadcrumbsService.prototype, "crumbsValue", {
@@ -895,6 +888,7 @@ var BreadcrumbsService = /** @class */ (function () {
     });
     Object.defineProperty(BreadcrumbsService.prototype, "crumbsAsObservable", {
         get: /**
+         * @private
          * @return {?}
          */
         function () {
@@ -932,16 +926,20 @@ var BreadcrumbsService = /** @class */ (function () {
         function (res) {
             /** @type {?} */
             var index = _this.crumbsValue.indexOf(res);
-            _this.crumbsValue[index]['label'] = label;
+            if (_this.crumbsValue[index]) {
+                _this.crumbsValue[index]['label'] = label;
+            }
         }));
     };
     /**
+     * @private
      * @param {?} label
      * @param {?} key
      * @param {?} url
      * @return {?}
      */
     BreadcrumbsService.prototype.push = /**
+     * @private
      * @param {?} label
      * @param {?} key
      * @param {?} url

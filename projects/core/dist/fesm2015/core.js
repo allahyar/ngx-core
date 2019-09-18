@@ -726,29 +726,24 @@ class BreadcrumbsService {
          */
         e => {
             /** @type {?} */
-            const prefix = this.config.breadcrumb.prefix;
+            const prefix = (config.breadcrumb.prefix);
+            this.url = (prefix) ? '/' : '';
             /** @type {?} */
-            const crumb = (prefix) ? [{ label: prefix.toString(), url: '', key: null }] : [];
+            const crumb = (prefix) ? [{ label: prefix.toString(), url: this.url, key: null }] : [];
             this.breadcrumbs$.next(crumb);
             this._resolveCrumbs(activatedRoute.root);
-            if (this.config.breadcrumb.useTitle) {
-                console.log(activatedRoute.root.firstChild);
-            }
         }));
     }
     /**
      * @private
      * @param {?} route
-     * @param {?=} url
      * @return {?}
      */
-    _resolveCrumbs(route, url = '') {
+    _resolveCrumbs(route) {
         /** @type {?} */
         const path = route.routeConfig ? route.routeConfig.path : '';
         /** @type {?} */
-        const label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['title'] || '' : 'Home';
-        /** @type {?} */
-        let nextUrl;
+        const label = route.routeConfig && route.routeConfig.data ? route.routeConfig.data['breadcrumb'] || '' : '';
         if (path.indexOf(':') !== -1) {
             /** @type {?} */
             const sucked = path.split('/');
@@ -759,24 +754,24 @@ class BreadcrumbsService {
             crumb => {
                 if (crumb.indexOf(':', 0) === 0) {
                     /** @type {?} */
-                    const key = crumbCleaner(crumb);
+                    const key = crumb.substr(1);
                     /** @type {?} */
                     const newLabel = route.snapshot.params[key];
-                    nextUrl = `${url}${newLabel}/`;
-                    this.push(newLabel, key, nextUrl);
+                    this.url += `${newLabel}/`;
+                    this.push(newLabel, key, this.url);
                 }
                 else {
-                    nextUrl = `${url}${crumb}/`;
-                    this.push(label, null, nextUrl);
+                    this.url += `${crumb}/`;
+                    this.push(label, null, this.url);
                 }
             }));
         }
         else {
-            nextUrl = `${url}${path}/`;
-            this.push(label, null, nextUrl);
+            this.url += `${path}/`;
+            this.push(label, null, this.url);
         }
         if (route.firstChild) {
-            return this._resolveCrumbs(route.firstChild, url);
+            return this._resolveCrumbs(route.firstChild);
         }
     }
     /**
@@ -787,6 +782,7 @@ class BreadcrumbsService {
         return this.breadcrumbs$.value;
     }
     /**
+     * @private
      * @return {?}
      */
     get crumbsAsObservable() {
@@ -815,10 +811,13 @@ class BreadcrumbsService {
         res => {
             /** @type {?} */
             const index = this.crumbsValue.indexOf(res);
-            this.crumbsValue[index]['label'] = label;
+            if (this.crumbsValue[index]) {
+                this.crumbsValue[index]['label'] = label;
+            }
         }));
     }
     /**
+     * @private
      * @param {?} label
      * @param {?} key
      * @param {?} url
